@@ -1,0 +1,93 @@
+{{#each pagini as |pagina|}}
+<div style="display: flex;margin-bottom:5px;">
+<div style="border:1px solid black;width:550px;height:40px;margin-left:20px;margin-top:20px;display: flex;
+  justify-content: center;"><div><span style ="width:100%;display: flex;
+  justify-content: center;">DEPARTAMENT</span><div style ="width:100%;display: flex;
+  justify-content: center;font-size:15px;border-bottom:1px solid black;">{{../departament}} </span></div></div></div>
+
+<div style="border:1px solid black;width:300px;height:40px;margin-left:20px;margin-top:20px;display: flex;
+  justify-content: center;"><div><span>FOAIE COLECTIVA DE PREZENTA</span><br/><div style ="width:100%;display: flex;
+  justify-content: center;">{{ ../perioada }} </span></div></div>
+  </div>
+    <div style="width:80px;height:40px;margin-top:20px;margin-left:100px; font-size:13px;display: flex;
+  justify-content: center;"><div><span>Data tiparirii: {{ ../dataTiparirii }}</span><br/><div> {{ ../oraTiparirii }} </span></div></div>
+  </div>
+  </div>
+  <div style="height:550px;margin-top:0!important">
+  {{#each randuri as |rand|}}
+  <table style="width:95%;margin-left:20px">
+  <tr style = "font-size:11px;">
+    <th width="2%"><div><span>Nr.<br/>crt.</span></div></th>
+    <th width="12%" style="border-right:0px;"><div><span>NUMELE ȘI<br/>PRENUMELE</span></div></th>
+    <th width="2%"></th>
+    {{#each zile as |zi|}}
+    <th width="2%"><div><span>{{zi.prescurtare}}<br/>{{zi.numar}}</span></div></th>
+    {{/each}}
+  </tr>
+  <tr style = "font-size:11px;height:35px;">
+      <th width="2%" style="border-bottom: 0px; !important"><div><span>{{nrCrt}}</span></div></th>
+        <td width="12%" style="border-bottom: 0px; !important"><div><span>{{rand.nume}}<br/>{{rand.prenume}}</span></div></td>
+            <th width="2%" style="border-bottom: 0px; !important;border-top: 0px; !important;font-size:11px;"><div><span>OI<br/>OE</span></div></th>
+    {{#each ore as |setOre|}}
+    <th width="2%" style = "font-size:11px;"><div><span>{{checkNull setOre.oraI}}<br/>{{checkNull setOre.oraE}}</span></div></th>
+    {{/each}}
+  </tr>
+  <tr style = "font-size:11px;height:35px;">
+      <th width="2%" style="border-top: 0px; !important; border-bottom:0px !important"><div></div></th>
+          <td width="12%" style="border-top: 0px; !important"><div style = "display:flex;font-size:11px;">Marca: <div style = "font-size:11px;font-weight: 900;"> {{rand.marca}}</div><div style = "display:flex;font-size:11px;margin-left:4px;">Tichete masă: <div style = "font-size:11px;font-weight: 900;"> {{rand.tichete}}</div></div></td>
+                      <th width="2%" style="border-top: 0px; !important"><div><span>TC<br/>TR</span></div></th>
+    {{#each orePontat as |setOrePontate|}}
+    <th width="2%"><div><span>{{ checkNull setOrePontate.oraC}}<br/>{{checkNull setOrePontate.oraR}}</span></div></th>
+    {{/each}}
+  </tr>
+  <tr>
+  </tr>
+</table>
+
+  <table style="width:95%;margin-left:20px">
+  <tr style = "font-size:12px;;height:10px !important;">
+      <th width="2%" style="border-top: 0px !important;border-right: 0px !important;"><div></div></th>
+          <th width="40%" style="border-top: 0px !important;border-left: 0px !important;"><div style = "display:flex"><div><div style = "display:flex;margin-right:5px;">SUMAR: </div><div style = "display:flex;height:10px;width:40px"></div></div><div style = "display:flex"><div><div style = "display:flex">Ore NORMA = {{oNorma}}</div><div style = "display:flex;width:120px">Ore regie = {{oRegie}}</div></div><div style = "display:flex"><div><div style = "display:flex">ZILE CM= {{zCM}}</div><div style = "display:flex;width:70px">ZILE CO= {{zCO}}</div></div><div style = "display:flex"><div><div style = "display:flex">ZILE FP = {{zFP}} </div><div style = "display:flex;width:90px">Ore SUPL = {{oSUPL}}</div></div><div style = "display:flex"><div><div style = "display:flex">Zile SUSP = {{zSUSP}} </div><div style = "display:flex;width:60px">TELE = {{T}}</div></div></th>
+          <th width="43%" style="border-top: 0px; !important"><div style = "display:flex;"><div><div style = "display:flex;margin-right:5px;">TOTAL ZILE<br/> NELUCRATE: </div><div style = "display:flex;width:40px"></div></div><div style = "display:flex"><div><div style = "display:flex">NEM =  {{NEM}}</div><div style = "display:flex;width:50px">AM = {{AM}}</div></div><div style = "display:flex"><div><div style = "display:flex">SIND= {{SIND}}</div><div style = "display:flex;width:50px">CM= {{CM}}</div></div><div style = "display:flex"><div><div style = "display:flex">CO = {{CO}} </div><div style = "display:flex;width:50px">COR = {{COR}}</div></div><div style = "display:flex"><div><div style = "display:flex">DEL = {{DEL}} </div><div style = "display:flex;width:50px">IFP = {{oIFP}}</div></div><div style = "display:flex"><div><div style = "display:flex">CC12 = {{CC12}} </div><div style = "display:flex;width:50px">DFD = {{DFD}}</div></div><div style = "display:flex"><div><div style = "display:flex">DET = {{DET}} </div><div style = "display:flex;width:50px">PRB = {{PRB}}</div></div><div style = "display:flex"><div><div style = "display:flex">REC = {{REC}} </div><div style = "display:flex;width:50px">CCM = {{CCM}}</div></div></th>
+          <th width="20%" style="border-top: 0px; !important"><div style = "display:flex"><div><div style = "display:flex">Ore pontate la CEAS</div><div style = "display:flex;justify-content:center;">{{oPCeas}}</div></div><div style = "display:flex"><div><div style = "display:flex;">Zile DELEGATII cu DIURNA </div><div style = "width:100%;display:flex;justify-content:center;">{{zDDiurna}}</div></div></th>
+  </tr>
+  </table>
+
+   {{/each}}
+
+  </div>
+
+
+  
+
+<div style="display:flex;margin-top:40px;margin-bottom:40px;margin-right:40px;">
+  <div style="border-bottom:1px solid black;width:300px;height:70px;margin-left:50px;display: flex;
+  justify-content: center;"><div><span>INTOCMIT,</span><br/><div style ="width:100%;display: flex;
+  justify-content: center;">{{ ../intocmit}}</span></div></div>
+  </div>
+
+  <div style="border-bottom:1px solid black;width:300px;height:70px;margin-left:50px;display: flex;
+  justify-content: center;"><div><span>SEF DEPARTAMENT</span><br/><div style ="width:100%;display: flex;
+  justify-content: center;">{{../sefDepartament}}</span></div></div>
+  </div>
+
+  <div style="border:1px solid black;width:350px;height:100px;margin-left:50px;display: flex;
+  justify-content: center;"><div><span>CERTIFICAT IN PRIVINTA REALITATII,</span><br/><span style="margin-left:20px;">REGULARITATII SI LEGALITATII</span>
+  <div style ="width:100%;display: flex;"><span>SUB Nr.: </span><span style="border-bottom:1px solid black;width:60px;"></span><span> din data de: </span><span style="border-bottom:1px solid black;width:100px;"></span></div>
+  <div style ="width:100%;display: flex;"><span>DE CATRE:</span><span style="border-bottom:1px solid black;width:213px;display:flex;justify-content:center;">{{../sefDepartament}}</span></div>
+   <div style ="width:100%;display: flex;"><span>DE LA:</span><span style="border-bottom:1px solid black;width:275px;display:flex;justify-content:center;font-size:10px;padding-top:5px">{{../departament}}</span></div>
+
+  </div>
+  </div>
+  </div>
+
+  {{/each}}
+
+
+
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+</style>
