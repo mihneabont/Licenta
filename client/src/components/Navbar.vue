@@ -9,8 +9,7 @@
         <i class="fa fa-arrow-left" aria-hidden="true"></i>ÎNAPOI
       </v-btn>
       <v-toolbar-title class="text-uppercase grey--text">
-        <span style="font-size:30px;">RAR</span>
-        <span style="font-size:30px;">PONTAJ</span>
+        <span style="font-size:30px;">EMP MANAGER</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-tooltip bottom v-if="isHome">
@@ -32,6 +31,16 @@
           </div>
         </template>
         <span>Schimbare parolă</span>
+      </v-tooltip>
+            <v-tooltip bottom v-if="isHome">
+        <template v-slot:activator="{ on }">
+          <div v-on="on">
+            <v-btn class="d-flex error mr-2" @click="logout()"
+              ><i class="fa fa-sign-out fa-2x" aria-hidden="true"
+            /></v-btn>
+          </div>
+        </template>
+        <span>Deconectare</span>
       </v-tooltip>
       <v-tooltip bottom v-if="isCalendar && isSuperAdmin">
         <template v-slot:activator="{ on }">
@@ -263,6 +272,10 @@ export default {
     },
     toggleDialogSarbatori() {
       this.dialogSarbatori = false;
+    },
+    logout() {
+      this.$router.push("/autentificare");
+      this.$store.commit("LOGOUT");
     },
     getGhid() {
       axios

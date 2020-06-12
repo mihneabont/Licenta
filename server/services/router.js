@@ -11,6 +11,7 @@ const fileUpload = require("../controllers/fileUpload.js");
 const calendarAngajat = require("../controllers/calendarAngajat.js");
 const downloadPdf = require("../controllers/downloadPdf.js");
 const confirmareDep = require("../controllers/confirmareDep.js");
+const device = require("../controllers/device.js");
 
 router.route("/angajati/:id?").get(angajati.get);
 router.route("/angajati").post(angajati.post);
@@ -19,6 +20,8 @@ router.route("/angajati/:id?").delete(angajati.delete);
 
 router.route("/sarbatori/").get(sarbatori.get);
 router.route("/sarbatori/").post(sarbatori.post);
+
+router.route("/deviceData/").post(device.post);
 
 router.route("/judete/:id?").get(judete.get);
 router.route("/departamente/:id_loc?/:id_dep?").get(departamente.get);

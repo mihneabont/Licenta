@@ -26,7 +26,7 @@
     </v-snackbar>
     <v-item-group align-center style="width:100%">
       <v-row class="d-flex flex-row justify-center">
-        <v-col v-for="optiune in optiuniC" :key="optiune.titlu" md="2">
+        <v-col v-for="optiune in optiuniC" :key="optiune.titlu" sm="3" md="3" lg="2">
           <v-item v-slot:default="{ active, toggle }">
             <v-card
               :color="itemColor(optiune)"
@@ -117,9 +117,10 @@ export default {
           path: "/calendar"
         },
         {
-          titlu: "Confirmă date",
-          icon: "fa fa-check-square-o",
-          descriere: "Confirmare pontaj pe luni"
+          titlu: "Grafice",
+          icon: "fa fa-line-chart",
+          descriere: "Grafice cu prezența angajaților",
+          path: "/grafice"
         },
         {
           titlu: "Foaie prezență",
@@ -127,18 +128,16 @@ export default {
           descriere: "Generare PDF cu date de pontaj"
         },
         {
+          titlu: "Confirmă date",
+          icon: "fa fa-check-square-o",
+          descriere: "Confirmare pontaj pe luni"
+        },
+        {
           titlu: "Adaugă pontaj",
           icon: "fa fa-file-text-o",
           descriere: "Încărcare fișier cu date pontaj",
           path: "/adaugare"
         },
-
-        {
-          titlu: "Ieșire",
-          icon: "fa fa-sign-out",
-          descriere: "Deconectare",
-          path: "/autentificare"
-        }
       ],
       optiuniAdminReg: [
         {
@@ -162,13 +161,6 @@ export default {
           icon: "fa fa-file-text-o",
           descriere: "Încărcare fișier cu date pontaj",
           path: "/adaugare"
-        },
-
-        {
-          titlu: "Ieșire",
-          icon: "fa fa-sign-out",
-          descriere: "Deconectare",
-          path: "/autentificare"
         }
       ],
       optiuniReg: [
@@ -177,12 +169,6 @@ export default {
           icon: "fa fa-calendar",
           descriere: "Pontajele zilnice ale angajaților",
           path: "/calendar"
-        },
-        {
-          titlu: "Ieșire",
-          icon: "fa fa-sign-out",
-          descriere: "Deconectare",
-          path: "/autentificare"
         }
       ]
     };
@@ -204,8 +190,11 @@ export default {
       }
     },
     itemColor(optiune) {
-      if (optiune.titlu === "Ieșire") {
-        return "error";
+      if (optiune.titlu === "Grafice" || optiune.titlu === "Calendar" || optiune.titlu === "Foaie prezență") {
+        return "success";
+      }
+      if (optiune.titlu === "Angajați") {
+        return "blue-grey darken-1";
       }
       return "primary";
     },
