@@ -117,12 +117,6 @@ export default {
           path: "/calendar"
         },
         {
-          titlu: "Grafice",
-          icon: "fa fa-line-chart",
-          descriere: "Grafice cu prezența angajaților",
-          path: "/grafice"
-        },
-        {
           titlu: "Foaie prezență",
           icon: "fa fa-file-pdf-o",
           descriere: "Generare PDF cu date de pontaj"
@@ -189,13 +183,7 @@ export default {
         this.$router.push(optiune.path);
       }
     },
-    itemColor(optiune) {
-      if (optiune.titlu === "Grafice" || optiune.titlu === "Calendar" || optiune.titlu === "Foaie prezență") {
-        return "success";
-      }
-      if (optiune.titlu === "Angajați") {
-        return "blue-grey darken-1";
-      }
+    itemColor() {
       return "primary";
     },
     createAndDownloadPdf() {
