@@ -285,7 +285,7 @@
         </v-col>
       </v-row>
       <v-row class="d-flex justify-center mt-3 title"
-        ><span>Total ore pontate</span></v-row
+        ><span>Total ore înregistrate</span></v-row
       >
       <v-row class="d-flex justify-center title">
         <span>{{ totalOrePontate }}</span>
