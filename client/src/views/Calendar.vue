@@ -267,7 +267,7 @@
                   </template>
                   <span>Zile libere plătite CCM</span>
                 </v-tooltip>
-                                <v-tooltip top>
+                <v-tooltip top>
                   <template v-slot:activator="{ on }">
                     <tr v-on="on">
                       <td class="d-flex">
@@ -285,7 +285,7 @@
         </v-col>
       </v-row>
       <v-row class="d-flex justify-center mt-3 title"
-        ><span>Total ore înregistrate</span></v-row
+        ><span>Total ore pontate</span></v-row
       >
       <v-row class="d-flex justify-center title">
         <span>{{ totalOrePontate }}</span>
@@ -498,7 +498,8 @@
           >
             <v-row class="fill-height d-flex justify-center">
               <v-card
-                color="teal lighten-3"
+                :color="culoareZi(day)"
+                :disabled="esteZiConfirmata(day)"
                 elevation="12"
                 :width="`80%`"
                 @click="editareZi(day, month, year)"
@@ -521,11 +522,11 @@
                   >TOTAL: {{ real(day) || "????" }}</v-row
                 >
               </v-card>
-              <!-- light-green lighten-2 -->
               <v-card
-                color="light-green lighten-2"
+                :color="culoareZi(day)"
                 class=""
                 elevation="12"
+                :disabled="esteZiConfirmata(day)"
                 :width="`80%`"
                 @click="editareZi(day, month, year)"
                 height="100%"
@@ -544,11 +545,12 @@
                 </v-row>
               </v-card>
               <v-card
-                color="orange accent-2"
+                :color="culoareZi(day)"
                 class=""
                 elevation="12"
                 :width="`80%`"
                 @click="editareZi(day, month, year)"
+                :disabled="esteZiConfirmata(day)"
                 height="100%"
                 v-if="
                   month == getMonth(calendarDate) &&
@@ -625,6 +627,20 @@
           </template>
         </v-calendar>
       </v-row>
+      <v-row
+        style="margin-top:10px; width:100%"
+        class="d-flex"
+        v-if="areZileConfirmate"
+        ><v-card
+          color="primary"
+          class="subtitle-1 d-flex ml-auto"
+          style="color:white"
+          ><span style="padding-right:10px;padding-left:10px"
+            >Zilele închise la culoare au fost deja confirmate și nu mai pot fi
+            modificate</span
+          ></v-card
+        ></v-row
+      >
     </v-col>
     <v-dialog v-model="dialog" max-width="600px"
       ><modala-editare-zi
@@ -751,7 +767,7 @@ const CODURI_CONCEDIU = [
   "PRB",
   "REC",
   "CCM",
-  "CC12"
+  "CC12",
 ];
 import axios from "axios";
 import { mapGetters } from "vuex";
@@ -759,7 +775,7 @@ import { mapGetters } from "vuex";
 const TIP_ZI = {
   LUCRATA: "LUCRATA",
   ABS_MOTIVATA: "ABS_MOTIVATA",
-  ABS_NEMOTIVATA: "ABS_NEMOTIVATA"
+  ABS_NEMOTIVATA: "ABS_NEMOTIVATA",
 };
 export default {
   components: { ModalaEditareZi, ModalaEditareMultipla },
@@ -784,6 +800,7 @@ export default {
       dialogCompletareToateZilele: false,
       showLoading: true,
       selectareM: false,
+      areZileConfirmate: false,
       zileSelectate: [],
       nrZileSelectate: [],
       marca: "",
@@ -796,7 +813,7 @@ export default {
       TIP_ZI: {
         LUCRATA: "LUCRATA",
         ABS_MOTIVATA: "ABS_MOTIVATA",
-        ABS_NEMOTIVATA: "ABS_NEMOTIVATA"
+        ABS_NEMOTIVATA: "ABS_NEMOTIVATA",
       },
       calendarDate: null,
       listaDepartamente: [],
@@ -814,14 +831,14 @@ export default {
         COR: 0,
         SUSP: 0,
         T: 0,
-        CC12:0,
+        CC12: 0,
         DFD: 0,
         NEM: 0,
         DET: 0,
         IFP: 0,
         PRD: 0,
         REC: 0,
-        CCM: 0
+        CCM: 0,
       },
       zile: [
         {
@@ -829,30 +846,30 @@ export default {
           DATA_PONTAJ: "08/10/2019",
           PONTAT_REAL: "08:20",
           ORA_I: "08:00",
-          ORA_E: "16:00"
+          ORA_E: "16:00",
         },
         {
           ID_PONTAJ: 3,
           DATA_PONTAJ: "09/10/2019",
           PONTAT_REAL: "",
           ORA_I: "",
-          ORA_E: ""
+          ORA_E: "",
         },
         {
           ID_PONTAJ: 2,
           DATA_PONTAJ: "10/10/2019",
           PONTAT_REAL: "33:20",
           ORA_I: "09:00",
-          ORA_E: "12:00"
+          ORA_E: "12:00",
         },
         {
           ID_PONTAJ: 3,
           DATA_PONTAJ: "16/10/2019",
           PONTAT_REAL: "08:20",
           ORA_I: "CO",
-          ORA_E: "null"
-        }
-      ]
+          ORA_E: "null",
+        },
+      ],
     };
   },
   computed: {
@@ -862,7 +879,7 @@ export default {
       let keys = ["NUME", "PRENUME", "MARCA", "COMPLET"];
       return this.listaAngajati.filter(function(angajat) {
         angajat.COMPLET = angajat.NUME + " " + angajat.PRENUME;
-        return keys.some(key =>
+        return keys.some((key) =>
           String(angajat[key])
             .toLowerCase()
             .startsWith(lowSearch)
@@ -897,26 +914,26 @@ export default {
     },
     listaZileComp() {
       return this.listaZile;
-    }
+    },
   },
   methods: {
     toggleEditVisible() {
       this.copieListaZile = JSON.parse(JSON.stringify(this.listaZile));
       this.editVisible = !this.editVisible;
     },
-    isSarbatoare(date){
+    isSarbatoare(date) {
       let gasit = false;
       this.dateSarbatori.forEach((element) => {
-        if(date === element){
+        if (date === element) {
           gasit = true;
         }
-      })
+      });
       return gasit;
     },
     isAdmin() {
       return this.getUser.data.admin;
     },
-    
+
     selectareMultipla() {
       this.selectareM = true;
     },
@@ -968,21 +985,22 @@ export default {
         let data = "";
         let luna = "";
         let zi = "";
-        if(dateObject.getMonth() < 9){
-          luna = "0" + (dateObject.getMonth() +1);
+        if (dateObject.getMonth() < 9) {
+          luna = "0" + (dateObject.getMonth() + 1);
         } else {
-          luna =  (dateObject.getMonth() +1);
+          luna = dateObject.getMonth() + 1;
         }
-        if(dateObject.getDate() < 10){
+        if (dateObject.getDate() < 10) {
           zi = "0" + dateObject.getDate();
         } else {
-          zi =  dateObject.getDate();
+          zi = dateObject.getDate();
         }
         data = dateObject.getFullYear() + "-" + luna + "-" + zi;
-        console.log(data);
-        console.log(this.dateSarbatori);
-        console.log(this.isSarbatoare(data));
-        if (dateObject.getDay() !== 6 && dateObject.getDay() !== 0 && !this.isSarbatoare(data)) {
+        if (
+          dateObject.getDay() !== 6 &&
+          dateObject.getDay() !== 0 &&
+          !this.isSarbatoare(data)
+        ) {
           if (!this.listaZile[i]) {
             let dataPontaj;
             if (i < 10) {
@@ -1001,7 +1019,7 @@ export default {
                 PONTAT_REAL: "8:30",
                 ORA_I: "08:00",
                 ORA_E: "16:30",
-                TIP: "LUCRATA"
+                TIP: "LUCRATA",
               };
             } else {
               this.listaZile[i] = {
@@ -1010,7 +1028,7 @@ export default {
                 PONTAT_REAL: "6:00",
                 ORA_I: "08:00",
                 ORA_E: "14:00",
-                TIP: "LUCRATA"
+                TIP: "LUCRATA",
               };
             }
           }
@@ -1027,14 +1045,20 @@ export default {
       this.nrZileSelectate.forEach((nrZiSelectata, index) => {
         this.listaZile[nrZiSelectata] = { ...val };
         this.listaZile[nrZiSelectata].DATA_PONTAJ = this.zileSelectate[index];
-        if (this.listaZile[nrZiSelectata].ORA_I === "T" || this.listaZile[nrZiSelectata].ORA_I === "CC12" || this.listaZile[nrZiSelectata].ORA_I === "DEL" || this.listaZile[nrZiSelectata].ORA_I === "DFD") {
+        if (
+          this.listaZile[nrZiSelectata].ORA_I === "T" ||
+          this.listaZile[nrZiSelectata].ORA_I === "CC12" ||
+          this.listaZile[nrZiSelectata].ORA_I === "DEL" ||
+          this.listaZile[nrZiSelectata].ORA_I === "DFD"
+        ) {
           var dateParts = this.listaZile[nrZiSelectata].DATA_PONTAJ.split("/");
           var dateObject = new Date(
             +dateParts[2],
             dateParts[1] - 1,
             +dateParts[0]
           );
-          if (dateObject.getDay() !== 5) this.listaZile[nrZiSelectata].PONTAT_REAL = "8:30";
+          if (dateObject.getDay() !== 5)
+            this.listaZile[nrZiSelectata].PONTAT_REAL = "8:30";
           else {
             this.listaZile[nrZiSelectata].PONTAT_REAL = "6:00";
           }
@@ -1085,7 +1109,9 @@ export default {
       if (this.isSuperAdmin) {
         return axios
           .put(
-            `//${ipServer}:3000/api/calendarAngajatSuper/${this.selectedUser.ID_SALARIAT}`,
+            `//${ipServer}:3000/api/calendarAngajatSuper/${
+              this.selectedUser.ID_SALARIAT
+            }`,
             payload
           )
           .then(() => {
@@ -1094,7 +1120,9 @@ export default {
       }
       return axios
         .put(
-          `//${ipServer}:3000/api/calendarAngajat/${this.selectedUser.ID_SALARIAT}`,
+          `//${ipServer}:3000/api/calendarAngajat/${
+            this.selectedUser.ID_SALARIAT
+          }`,
           payload
         )
         .then(() => {
@@ -1116,7 +1144,7 @@ export default {
       return null;
     },
     init() {
-      axios.get(`//${ipServer}:3000/api/departamente`).then(response => {
+      axios.get(`//${ipServer}:3000/api/departamente`).then((response) => {
         this.listaDepartamente = response.data;
         this.departament = this.listaDepartamente[0];
       });
@@ -1146,7 +1174,7 @@ export default {
     getSarbatori() {
       axios.get(`//${ipServer}:3000/api/sarbatori`).then((res) => {
         res.data.forEach((element, index) => {
-          this.dateSarbatori[index] = element.DATA.substring(0,10);
+          this.dateSarbatori[index] = element.DATA.substring(0, 10);
         });
       });
     },
@@ -1167,7 +1195,7 @@ export default {
         IFP: 0,
         PRD: 0,
         REC: 0,
-        CCM: 0
+        CCM: 0,
       }),
         Object.entries(this.listaZile).forEach(([key, val]) => {
           if (
@@ -1188,7 +1216,11 @@ export default {
       if (this.listaZile) {
         Object.entries(this.listaZile).forEach(([key, val]) => {
           if (
-            (!CODURI_CONCEDIU.includes(val.ORA_I) || val.ORA_I === "T" || val.ORA_I === "CC12" || val.ORA_I === "DFD" || val.ORA_I === "DEL") &&
+            (!CODURI_CONCEDIU.includes(val.ORA_I) ||
+              val.ORA_I === "T" ||
+              val.ORA_I === "CC12" ||
+              val.ORA_I === "DFD" ||
+              val.ORA_I === "DEL") &&
             val.ORA_I !== "NEM"
           ) {
             if (val.PONTAT_REAL === "10+") val.PONTAT_REAL = "10+";
@@ -1221,7 +1253,12 @@ export default {
       let bonuri = 0;
       if (this.listaZile) {
         Object.entries(this.listaZile).forEach(([key, val]) => {
-          if (key && (val.TIP === TIP_ZI.LUCRATA || val.ORA_I === "T" || val.ORA_I === "DFD")) {
+          if (
+            key &&
+            (val.TIP === TIP_ZI.LUCRATA ||
+              val.ORA_I === "T" ||
+              val.ORA_I === "DFD")
+          ) {
             bonuri++;
           }
         });
@@ -1236,7 +1273,12 @@ export default {
       return current_datetime[1] + "-" + current_datetime[0];
     },
     modificareZi(val) {
-      if (val[0].ORA_I === "T" || val[0].ORA_I === "CC12" || val[0].ORA_I === "DEL" || val[0].ORA_I === "DFD") {
+      if (
+        val[0].ORA_I === "T" ||
+        val[0].ORA_I === "CC12" ||
+        val[0].ORA_I === "DEL" ||
+        val[0].ORA_I === "DFD"
+      ) {
         var dateParts = val[0].DATA_PONTAJ.split("/");
         var dateObject = new Date(
           +dateParts[2],
@@ -1271,9 +1313,9 @@ export default {
               this.selectedUser.ID_SALARIAT
             }/${this.formatareDataRequest(this.date)}`
           )
-          .then(response => {
+          .then((response) => {
             this.listaZile = {};
-            response.data.forEach(zi => {
+            response.data.forEach((zi) => {
               let nrZi = parseInt(zi.DATA_PONTAJ.substring(0, 2));
               this.listaZile[nrZi] = zi;
               if (CODURI_CONCEDIU.includes(zi.ORA_I)) {
@@ -1299,9 +1341,9 @@ export default {
               this.selectedUser.ID_SALARIAT
             }/${this.formatareDataRequest(this.date)}`
           )
-          .then(response => {
+          .then((response) => {
             this.listaZile = {};
-            response.data.forEach(zi => {
+            response.data.forEach((zi) => {
               let nrZi = parseInt(zi.DATA_PONTAJ.substring(0, 2));
               this.listaZile[nrZi] = zi;
               if (CODURI_CONCEDIU.includes(zi.ORA_I)) {
@@ -1331,15 +1373,42 @@ export default {
         }
       }
     },
+    culoareZi(day) {
+      let zi;
+      if (this.listaZile[day]) {
+        zi = this.listaZile[day];
+      }
+      if (zi && zi.TIP === TIP_ZI.LUCRATA) {
+        return zi.PONTAT_CONFIRMAT ? "teal lighten-2" : "teal lighten-3";
+      }
+      if (zi && zi.TIP === TIP_ZI.ABS_MOTIVATA) {
+        return zi.PONTAT_CONFIRMAT
+          ? "light-green darken-2"
+          : "light-green lighten-2";
+      }
+      if (zi && zi.TIP === TIP_ZI.ABS_NEMOTIVATA) {
+        return zi.PONTAT_CONFIRMAT ? "orange accent-4" : "orange accent-2";
+      }
+    },
+    esteZiConfirmata(day) {
+      let zi;
+      if (this.listaZile[day]) {
+        zi = this.listaZile[day];
+      }
+      if (zi && zi.PONTAT_CONFIRMAT) {
+        this.areZileConfirmate = true;
+        // if (this.getUser.data.idAngajat === 99999) {
+        //   return false;
+        // }
+        return true;
+      }
+      return false;
+    },
     editareZi(day, month, year) {
-      if (
-        !this.editVisible &&
-        (!this.listaZile[day] ||
-          this.listaZile[day].TIP !== TIP_ZI.LUCRATA ||
-          this.isSuperAdmin)
-      ) {
+      if (!this.editVisible) {
         if (this.listaZile[day]) {
           this.ziSelectata = this.listaZile[day];
+          console.log(this.ziSelectata);
         } else {
           let dataPontaj;
           if (day < 10) {
@@ -1361,7 +1430,7 @@ export default {
               PONTAT_REAL: "",
               TIP: "ABS_MOTIVATA",
               ORA_I: this.lastPick,
-              ORA_E: ""
+              ORA_E: "",
             };
           } else {
             if (!this.nrZileSelectate.includes(day)) {
@@ -1382,18 +1451,19 @@ export default {
           this.dialog = true;
         }
       }
-    }
+    },
   },
   watch: {
     date() {
       this.calendarDate = this.date + "-1";
-          this.getSarbatori();
+      this.areZileConfirmate = false;
+      this.getSarbatori();
       this.setDataCalendar();
     },
     judet() {
       axios
         .get(`//${ipServer}:3000/api/judete/${this.judet.ID_N_JUDET}`)
-        .then(response => {
+        .then((response) => {
           this.listaLocatii = response.data;
           this.locatie = this.listaLocatii[0];
         });
@@ -1401,9 +1471,11 @@ export default {
     locatie() {
       axios
         .get(
-          `//${ipServer}:3000/api/departamenteDinLoc/${this.locatie.ID_N_LOCATIE}`
+          `//${ipServer}:3000/api/departamenteDinLoc/${
+            this.locatie.ID_N_LOCATIE
+          }`
         )
-        .then(response => {
+        .then((response) => {
           this.listaDepartamente = [];
           this.listaDepartamente.push({ NUME_DEPART: "TOATE" });
           this.listaDepartamente.push(...response.data);
@@ -1411,6 +1483,7 @@ export default {
         });
     },
     departament() {
+      this.areZileConfirmate = false;
       if (
         this.departament &&
         this.departament.ID_N_DEPART &&
@@ -1420,9 +1493,11 @@ export default {
       ) {
         axios
           .get(
-            `//${ipServer}:3000/api/departamente/${this.locatie.ID_N_LOCATIE}/${this.departament.ID_N_DEPART}`
+            `//${ipServer}:3000/api/departamente/${this.locatie.ID_N_LOCATIE}/${
+              this.departament.ID_N_DEPART
+            }`
           )
-          .then(response => {
+          .then((response) => {
             this.listaAngajati = response.data;
             this.selectedUser = this.listaAngajati[0];
           });
@@ -1430,7 +1505,7 @@ export default {
         if (this.departament && this.locatie && this.locatie.ID_N_LOCATIE) {
           axios
             .get(`//${ipServer}:3000/api/locatii/${this.locatie.ID_N_LOCATIE}`)
-            .then(response => {
+            .then((response) => {
               this.listaAngajati = response.data;
               this.selectedUser = this.listaAngajati[0];
             });
@@ -1438,11 +1513,14 @@ export default {
       }
     },
     selectedUser() {
+      this.areZileConfirmate = false;
       axios
         .get(
-          `//${ipServer}:3000/api/angajatipublic/${this.selectedUser.ID_SALARIAT}`
+          `//${ipServer}:3000/api/angajatipublic/${
+            this.selectedUser.ID_SALARIAT
+          }`
         )
-        .then(response => {
+        .then((response) => {
           this.setDataCalendar();
           this.marca = response.data.MARCA;
           this.dataAngajare = this.formatareDataDinBD(
@@ -1453,16 +1531,16 @@ export default {
           );
           this.codCartela = response.data.COD_CARTELA;
         });
-    }
+    },
   },
   mounted() {
     this.getSarbatori();
     this.calendarDate = this.date + "-1";
-    axios.get(`//${ipServer}:3000/api/judete`).then(response => {
+    axios.get(`//${ipServer}:3000/api/judete`).then((response) => {
       console.log(this.getUser.data);
       if (this.getUser.data.idAngajat !== 99999) {
         this.listaJudete = response.data.filter(
-          item => item.ID_N_JUDET === this.getUser.data.judet
+          (item) => item.ID_N_JUDET === this.getUser.data.judet
         );
       } else {
         this.listaJudete = response.data;
@@ -1470,6 +1548,6 @@ export default {
       this.judet = this.listaJudete[0];
     });
     this.init();
-  }
+  },
 };
 </script>
