@@ -11,6 +11,15 @@
       Se generează foaia de prezență
     </v-snackbar>
     <v-snackbar
+      color="amber darken-3"
+      :timeout="10000000"
+      bottom
+      v-model="snackbarGhid"
+      class="mt-5"
+    >
+      Atentie! Înainte de a întocmi foaia de prezență, vă rugăm să confirmați datele folosind "Confirmă date", altfel nu se pot calcula orele. După confirmare, datele nu vor mai putea fi modificate!
+    </v-snackbar>
+    <v-snackbar
       v-model="doneAlert"
       :timeout="2000"
       color="success"
@@ -26,7 +35,7 @@
     </v-snackbar>
     <v-item-group align-center style="width:100%">
       <v-row class="d-flex flex-row justify-center">
-        <v-col v-for="optiune in optiuniC" :key="optiune.titlu" sm="3" md="3" lg="2">
+        <v-col v-for="optiune in optiuniC" :key="optiune.titlu" md="2">
           <v-item v-slot:default="{ active, toggle }">
             <v-card
               :color="itemColor(optiune)"
@@ -102,6 +111,7 @@ export default {
       dialogConfirmare: false,
       dialogPrezenta: false,
       doneAlert: false,
+      snackbarGhid:true,
       generationAlert: false,
       optiuni: [
         {
@@ -117,14 +127,14 @@ export default {
           path: "/calendar"
         },
         {
-          titlu: "Foaie prezență",
-          icon: "fa fa-file-pdf-o",
-          descriere: "Generare PDF cu date de pontaj"
-        },
-        {
           titlu: "Confirmă date",
           icon: "fa fa-check-square-o",
           descriere: "Confirmare pontaj pe luni"
+        },
+        {
+          titlu: "Foaie prezență",
+          icon: "fa fa-file-pdf-o",
+          descriere: "Generare PDF cu date de pontaj"
         },
         {
           titlu: "Adaugă pontaj",
@@ -132,6 +142,13 @@ export default {
           descriere: "Încărcare fișier cu date pontaj",
           path: "/adaugare"
         },
+
+        {
+          titlu: "Ieșire",
+          icon: "fa fa-sign-out",
+          descriere: "Deconectare",
+          path: "/autentificare"
+        }
       ],
       optiuniAdminReg: [
         {
@@ -155,6 +172,13 @@ export default {
           icon: "fa fa-file-text-o",
           descriere: "Încărcare fișier cu date pontaj",
           path: "/adaugare"
+        },
+
+        {
+          titlu: "Ieșire",
+          icon: "fa fa-sign-out",
+          descriere: "Deconectare",
+          path: "/autentificare"
         }
       ],
       optiuniReg: [
@@ -163,6 +187,12 @@ export default {
           icon: "fa fa-calendar",
           descriere: "Pontajele zilnice ale angajaților",
           path: "/calendar"
+        },
+        {
+          titlu: "Ieșire",
+          icon: "fa fa-sign-out",
+          descriere: "Deconectare",
+          path: "/autentificare"
         }
       ]
     };
@@ -183,7 +213,10 @@ export default {
         this.$router.push(optiune.path);
       }
     },
-    itemColor() {
+    itemColor(optiune) {
+      if (optiune.titlu === "Ieșire") {
+        return "error";
+      }
       return "primary";
     },
     createAndDownloadPdf() {

@@ -59,7 +59,7 @@ async function updateSuperAdmin(id, requestBody) {
       //insert
       let queryInsert = `INSERT INTO PONTAJ VALUES(NVL((select max(ID_PONTAJ) + 1 from PONTAJ),1),
                           ${id}, TO_DATE('${requestBody[i].DATA_PONTAJ}', 'DD-MM-YYYY'), '${requestBody[i].PONTAT_REAL}',null,
-                          '${requestBody[i].ORA_I}', '${requestBody[i].ORA_E}')`;
+                          '${requestBody[i].ORA_I}', '${requestBody[i].ORA_E}', sysdate, 5)`;
       const insert = await database.simpleExecute(queryInsert, {});
       console.log(insert.rowsAffected);
     } else if(result.rows.length === 1){
@@ -90,7 +90,7 @@ async function updateAdmin(id, requestBody) {
         //insert
         let queryInsert = `INSERT INTO PONTAJ VALUES(NVL((select max(ID_PONTAJ) + 1 from PONTAJ),1),
                             ${id}, TO_DATE('${requestBody[i].DATA_PONTAJ}', 'DD-MM-YYYY'), null,null,
-                            '${requestBody[i].ORA_I}', '${requestBody[i].ORA_E}')`;
+                            '${requestBody[i].ORA_I}', '${requestBody[i].ORA_E}', sysdate, 5)`;
         const insert = await database.simpleExecute(queryInsert, {});
         console.log(insert.rowsAffected);
       }

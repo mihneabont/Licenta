@@ -440,7 +440,7 @@
             style="width:20% !important;"
             v-if="!editVisible"
             :disabled="selectareM"
-            @click="salveaza"
+            @click="toggleDialogSalvare"
             >SALVEAZA</v-btn
           >
         </v-col>
@@ -697,6 +697,46 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="avertizareSalvare" max-width="500">
+      <v-card>
+        <v-card-title class="headline">Zile lucrate incomplete</v-card-title>
+
+        <v-card-text>
+          Atenție! <br />
+          Următoarele zile lucrătoare nu au oră de intrare și/sau oră de
+          ieșire:<br />
+          <ul style="margin-top:10px;">
+            <li v-for="zi in listaZileIncomplete" :key="zi.DATA_PONTAJ">
+              {{ zi.DATA_PONTAJ }}
+            </li>
+          </ul>
+        </v-card-text>
+
+        <v-card-actions style="padding-right:24px;">
+          <v-col
+            offset="2"
+            cols="5"
+            class="d-flex pr-0"
+            style="height:60px;padding-left:24px;"
+          >
+            <v-btn
+              class="error d-flex justify-center"
+              style="width:100% !important;"
+              @click="avertizareSalvare = false"
+              >NU SALVA</v-btn
+            >
+          </v-col>
+          <v-col cols="5" class="d-flex">
+            <v-btn
+              class="success d-flex justify-center"
+              style="width:100% !important;"
+              @click="salveazaCuToggle"
+              >SALVEAZĂ ORICUM</v-btn
+            >
+          </v-col>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-dialog v-model="dialogCompletareToateZilele" max-width="500">
       <v-card>
         <v-card-title class="headline"
@@ -795,7 +835,9 @@ export default {
       month: null,
       dialog: false,
       dateSarbatori: [],
+      listaZileIncomplete: [],
       dialogMultipla: false,
+      avertizareSalvare: false,
       dialogCompletare: false,
       dialogCompletareToateZilele: false,
       showLoading: true,
@@ -933,7 +975,10 @@ export default {
     isAdmin() {
       return this.getUser.data.admin;
     },
-
+    salveazaCuToggle() {
+      this.avertizareSalvare = false;
+      this.salveaza();
+    },
     selectareMultipla() {
       this.selectareM = true;
     },
@@ -1049,7 +1094,8 @@ export default {
           this.listaZile[nrZiSelectata].ORA_I === "T" ||
           this.listaZile[nrZiSelectata].ORA_I === "CC12" ||
           this.listaZile[nrZiSelectata].ORA_I === "DEL" ||
-          this.listaZile[nrZiSelectata].ORA_I === "DFD"
+          this.listaZile[nrZiSelectata].ORA_I === "DFD" ||
+          this.listaZile[nrZiSelectata].ORA_I === "CCM"
         ) {
           var dateParts = this.listaZile[nrZiSelectata].DATA_PONTAJ.split("/");
           var dateObject = new Date(
@@ -1168,6 +1214,31 @@ export default {
     toggleDialogEditare() {
       this.dialog = !this.dialog;
     },
+    zileIncomplete() {
+      let zileI = [];
+      for (let zi in this.listaZile) {
+        let valoareZi = this.listaZile[zi];
+        if (valoareZi && valoareZi.TIP === TIP_ZI.LUCRATA) {
+          console.log(valoareZi);
+          if (
+            !valoareZi.ORA_I ||
+            !valoareZi.ORA_E ||
+            valoareZi.ORA_E == "null"
+          ) {
+            zileI.push(valoareZi);
+          }
+        }
+      }
+      this.listaZileIncomplete = zileI;
+      return zileI.length > 0;
+    },
+    toggleDialogSalvare() {
+      if (this.zileIncomplete()) {
+        this.avertizareSalvare = true;
+      } else {
+        this.salveaza();
+      }
+    },
     toggleDialogEditareMultipla() {
       this.dialogMultipla = !this.dialogMultipla;
     },
@@ -1220,6 +1291,7 @@ export default {
               val.ORA_I === "T" ||
               val.ORA_I === "CC12" ||
               val.ORA_I === "DFD" ||
+              val.ORA_I === "CCM" ||
               val.ORA_I === "DEL") &&
             val.ORA_I !== "NEM"
           ) {
@@ -1277,7 +1349,8 @@ export default {
         val[0].ORA_I === "T" ||
         val[0].ORA_I === "CC12" ||
         val[0].ORA_I === "DEL" ||
-        val[0].ORA_I === "DFD"
+        val[0].ORA_I === "DFD" ||
+        val[0].ORA_I === "CCM"
       ) {
         var dateParts = val[0].DATA_PONTAJ.split("/");
         var dateObject = new Date(
@@ -1379,7 +1452,7 @@ export default {
         zi = this.listaZile[day];
       }
       if (zi && zi.TIP === TIP_ZI.LUCRATA) {
-        return zi.PONTAT_CONFIRMAT ? "teal lighten-2" : "teal lighten-3";
+        return zi.PONTAT_CONFIRMAT ? "teal lighten-1" : "teal lighten-3";
       }
       if (zi && zi.TIP === TIP_ZI.ABS_MOTIVATA) {
         return zi.PONTAT_CONFIRMAT
@@ -1396,10 +1469,10 @@ export default {
         zi = this.listaZile[day];
       }
       if (zi && zi.PONTAT_CONFIRMAT) {
+        if (this.getUser.data.idAngajat === 99999) {
+          return false;
+        }
         this.areZileConfirmate = true;
-        // if (this.getUser.data.idAngajat === 99999) {
-        //   return false;
-        // }
         return true;
       }
       return false;

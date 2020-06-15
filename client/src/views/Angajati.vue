@@ -610,7 +610,6 @@ export default {
       this.dateFormattedPlecare = this.formatDate(this.dataPlecare);
     },
     judet() {
-      console.log(this.judet);
       axios
         .get(`//${ipServer}:3000/api/judete/${this.judet.ID_N_JUDET}`)
         .then(response => {

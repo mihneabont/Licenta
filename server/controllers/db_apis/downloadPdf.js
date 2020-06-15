@@ -88,7 +88,14 @@ async function genereazaPdf(dep) {
         numeCurent = result2.rows[0].NUME + " " + result2.rows[0].PRENUME;
       }
 
+      let getNumeSefFromDb = `select NUME_SEF from n_SEFI where ID_N_DEPART = ${dep.id}`;
+      const result3 = await database.simpleExecute(getNumeSefFromDb, {});
+
+      console.log(result3);
       let numeSef = "";
+      if (result3 && result3.rows && result3.rows[0]) {
+        numeSef = result3.rows[0].NUME_SEF;
+      }
     
       return {randuri,
               numeCurent: numeCurent,
@@ -173,7 +180,14 @@ if (dep.id_loc) {
       numeCurent = result2.rows[0].NUME + " " + result2.rows[0].PRENUME;
     }
 
+    let getNumeSefFromDb = `select NUME_SEF from n_SEFI where ID_N_LOCATIE = ${dep.id_loc}`;
+    const result3 = await database.simpleExecute(getNumeSefFromDb, {});
+
+    console.log(result3);
     let numeSef = "";
+    if (result3 && result3.rows && result3.rows[0]) {
+      numeSef = result3.rows[0].NUME_SEF;
+    }
   
     return {randuri,
             numeCurent: numeCurent,
@@ -261,7 +275,13 @@ if (dep.id_dep && dep.id_loc) {
       numeCurent = result2.rows[0].NUME + " " + result2.rows[0].PRENUME;
     }
 
+    let getNumeSefFromDb = `select NUME_SEF from N_SEFI where ID_N_DEPART = ${dep.id_dep}`;
+    const result3 = await database.simpleExecute(getNumeSefFromDb, {});
+
     let numeSef = "";
+    if (result3 && result3.rows && result3.rows[0]) {
+      numeSef = result3.rows[0].NUME_SEF;
+    }
   
     return {randuri,
             numeCurent: numeCurent,

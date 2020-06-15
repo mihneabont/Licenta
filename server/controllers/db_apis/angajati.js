@@ -4,19 +4,19 @@ const oracledb = require("oracledb");
 const selecteazaAngajati = `select n.ID_SALARIAT, NUME, PRENUME, n.DATA_INCEP,(SELECT MARCA FROM MARCA WHERE n.ID_SALARIAT=ID_SALARIAT ORDER BY DATA_INCEP DESC FETCH NEXT 1 ROWS ONLY) AS MARCA
 from NUME_SALARIAT n order by NUME,PRENUME`;
 
-const selecteazaAngajatiParticular = `select DISTINCT n.ID_SALARIAT, NUME, PRENUME, (SELECT MARCA FROM MARCA WHERE n.ID_SALARIAT=ID_SALARIAT ORDER BY DATA_INCEP DESC FETCH NEXT 1 ROWS ONLY) AS MARCA, CNP, s.DATA_INCEP +1/2 as DATA_INCEP, s.DATA_IES +1/2 as DATA_IES, s.DATA_ADAUGARE +2/24 AS DATA_ORA_OPER,
+const selecteazaAngajatiParticular = `select DISTINCT n.ID_SALARIAT, NUME, PRENUME, (SELECT MARCA FROM MARCA WHERE n.ID_SALARIAT=ID_SALARIAT ORDER BY DATA_INCEP DESC FETCH NEXT 1 ROWS ONLY) AS MARCA, CNP, s.DATA_INCEP +1/2 as DATA_INCEP, s.DATA_IES +1/2 as DATA_IES, s.DATA_ORA_OPER +2/24 AS DATA_ORA_OPER,
 (select COD_CARTELA from N_CARTELE where ID_SALARIAT=:id_angajat and DATA_IES IS NULL and DATA_INCEP IS NOT NULL) AS COD_CARTELA, d.ID_N_JUDET, d.ID_N_LOCATIE, d.ID_N_DEPART
         from NUME_SALARIAT n,SALARIAT s, DEPART_SALARIAT d
         where n.ID_SALARIAT = s.ID_SALARIAT and n.ID_SALARIAT = d.ID_SALARIAT
         and s.ID_SALARIAT = :id_angajat`;
 
 const insertAngajatSql = `INSERT ALL
-                         INTO SALARIAT(ID_SALARIAT, CNP, DATA_INCEP, DATA_IES,DATA_ADAUGARE) VALUES (:id_angajat, :cnp, :data_inceput, :data_sfarsit, sysdate )
-                         INTO DATA_ANGAJARE(ID_DATA_ANGAJARE, ID_SALARIAT, DATA_ANGAJARE, DATA_PLECARE) VALUES (NVL((select max(ID_DATA_ANGAJARE)+1 from DATA_ANGAJARE),1),:id_angajat, :data_inceput, :data_sfarsit)
-                         INTO NUME_SALARIAT(ID_NUME_SALARIAT, ID_SALARIAT, NUME, PRENUME, DATA_INCEP, DATA_IES) VALUES (NVL((select max(ID_NUME_SALARIAT)+1 from NUME_SALARIAT),1), :id_angajat, :nume, :prenume, :data_inceput, :data_sfarsit)
-                         INTO DEPART_SALARIAT(ID_DEPART_SALARIAT, ID_SALARIAT, ID_N_JUDET, ID_N_LOCATIE, ID_N_DEPART) VALUES (NVL((select max(ID_DEPART_SALARIAT)+1 from DEPART_SALARIAT),1), :id_angajat, :judet, :locatia, :departament)
-                         INTO MARCA(ID_MARCA, ID_SALARIAT, MARCA, DATA_INCEP, DATA_IES) VALUES (NVL((select max(ID_MARCA)+1 from MARCA),1), :id_angajat, :marca, :data_inceput, :data_sfarsit)
-                         INTO N_CARTELE(ID_N_CARTELE, ID_SALARIAT, COD_CARTELA, DATA_INCEP, DATA_IES) VALUES (NVL((select max(ID_N_CARTELE)+1 from N_CARTELE),1), :id_angajat, :cod_cartela, :data_inceput, :data_sfarsit)
+                         INTO SALARIAT(ID_SALARIAT, CNP, DATA_INCEP, DATA_IES, DATA_ORA_OPER, ID_N_CALCO) VALUES (:id_angajat, :cnp, :data_inceput, :data_sfarsit, sysdate ,5 )
+                         INTO DATA_ANGAJARE(ID_DATA_ANGAJARE, ID_SALARIAT, DATA_ANGAJARE, DATA_PLECARE, DATA_ORA_OPER, ID_N_CALCO) VALUES (NVL((select max(ID_DATA_ANGAJARE)+1 from DATA_ANGAJARE),1),:id_angajat, :data_inceput, :data_sfarsit, sysdate ,5 )
+                         INTO NUME_SALARIAT(ID_NUME_SALARIAT, ID_SALARIAT, NUME, PRENUME, DATA_INCEP, DATA_IES, DATA_ORA_OPER, ID_N_CALCO) VALUES (NVL((select max(ID_NUME_SALARIAT)+1 from NUME_SALARIAT),1), :id_angajat, :nume, :prenume, :data_inceput, :data_sfarsit, sysdate, 5 )
+                         INTO DEPART_SALARIAT(ID_DEPART_SALARIAT, ID_SALARIAT, ID_N_JUDET, ID_N_LOCATIE, ID_N_DEPART, DATA_INCEP, DATA_IES ,DATA_ORA_OPER, ID_N_CALCO) VALUES (NVL((select max(ID_DEPART_SALARIAT)+1 from DEPART_SALARIAT),1), :id_angajat, :judet, :locatia, :departament, :data_inceput, :data_sfarsit, sysdate, 5 )
+                         INTO MARCA(ID_MARCA, ID_SALARIAT, MARCA, DATA_INCEP, DATA_IES ,DATA_ORA_OPER, ID_N_CALCO) VALUES (NVL((select max(ID_MARCA)+1 from MARCA),1), :id_angajat, :marca, :data_inceput, :data_sfarsit, sysdate, 5 )
+                         INTO N_CARTELE(ID_N_CARTELE, ID_SALARIAT, COD_CARTELA, DATA_INCEP, DATA_IES ,DATA_ORA_OPER, ID_N_CALCO) VALUES (NVL((select max(ID_N_CARTELE)+1 from N_CARTELE),1), :id_angajat, :cod_cartela, :data_inceput, :data_sfarsit, sysdate, 5)
                          SELECT 1 FROM dual`;
 
 async function createselecteazaAngajati(angajat) {
@@ -120,33 +120,45 @@ async function update(angajat) {
   const objAng = Object.assign({}, angajat);
 
   const update_salariat = `UPDATE SALARIAT SET
-                            "CNP" = ${objAng.cnp},
-                            "DATA_INCEP" = '${objAng.data_inceput}',
-                            "DATA_IES" = '${objAng.data_sfarsit}'
+                            CNP = ${objAng.cnp},
+                            DATA_INCEP = '${objAng.data_inceput}',
+                            DATA_IES = '${objAng.data_sfarsit}',
+                            
+                            ID_N_CALCO = 5
                           where ID_SALARIAT = ${objAng.id_angajat}`;
 
   const update_data_ang = `UPDATE DATA_ANGAJARE SET
                           DATA_ANGAJARE = '${objAng.data_inceput}',
-                          DATA_PLECARE = '${objAng.data_sfarsit}'
+                          DATA_PLECARE = '${objAng.data_sfarsit}',
+                          
+                          ID_N_CALCO = 5
                         where ID_SALARIAT = ${objAng.id_angajat}`;
 
   const update_nume_salariat = `UPDATE NUME_SALARIAT SET
                           NUME = '${objAng.nume}',
                           PRENUME = '${objAng.prenume}',
                           DATA_INCEP = '${objAng.data_inceput}',
-                          DATA_IES = '${objAng.data_sfarsit}'
+                          DATA_IES = '${objAng.data_sfarsit}',
+                          
+                          ID_N_CALCO = 5
                         where ID_SALARIAT = ${objAng.id_angajat}`;
 
   const update_depart_salar = `UPDATE DEPART_SALARIAT SET
                           ID_N_JUDET = ${objAng.judet},
                           ID_N_LOCATIE = ${objAng.locatia},
-                          ID_N_DEPART = ${objAng.departament}
+                          ID_N_DEPART = ${objAng.departament},
+                          DATA_INCEP = '${objAng.data_inceput}',
+                          DATA_IES = '${objAng.data_sfarsit}',
+                          
+                          ID_N_CALCO = 5
                         where ID_SALARIAT = ${objAng.id_angajat}`;
 
   const update_marca = `UPDATE MARCA SET
                         MARCA = ${objAng.marca},
                         DATA_INCEP = '${objAng.data_inceput}',
-                        DATA_IES = '${objAng.data_sfarsit}'
+                        DATA_IES = '${objAng.data_sfarsit}',
+                        
+                        ID_N_CALCO = 5
                       where ID_SALARIAT = ${objAng.id_angajat}`;
 
         
@@ -157,7 +169,9 @@ async function update(angajat) {
 
   if (objAng.id_angajat) {
     let query = update_salariat;
+
     const result = await database.simpleExecute(query, {});
+
     if (result.rowsAffected !== 0) {
       let query = update_data_ang;
       const result = await database.simpleExecute(query, {});

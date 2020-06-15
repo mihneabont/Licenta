@@ -115,7 +115,7 @@ async function sendAndProcessFile(array) {
         // }
         query2 = `INSERT INTO PONTAJ_CEAS
                 VALUES(NVL((select max(ID_PONTAJ_CEAS)+1 from PONTAJ_CEAS),1),
-                '${pontare.ID_CEAS}', '${pontare.COD_CARTELA}', '${pontare.DATA_PONTARE}', '${pontare.ORA_PONTARE}', '${pontare.TIP_PONTARE}')`;
+                '${pontare.ID_CEAS}', '${pontare.COD_CARTELA}', '${pontare.DATA_PONTARE}', '${pontare.ORA_PONTARE}', '${pontare.TIP_PONTARE}', sysdate, 5)`;
 
         try {
           const insertCeas = await database.simpleExecuteWithConn(conn, query2);
@@ -177,7 +177,7 @@ async function sendAndProcessFile(array) {
           }
         } else if (test.rows.length == 0) {
           let queryAddPontaj = `INSERT INTO PONTAJ
-                     VALUES(NVL((select max(ID_PONTAJ) +1 from PONTAJ),1), (select ID_SALARIAT from N_CARTELE where COD_CARTELA = '${pontare.COD_CARTELA}' and DATA_IES IS NULL AND DATA_INCEP IS NOT NULL), '${pontare.DATA_PONTARE}',null ,null , '${pontare.ORA_PONTARE}', null)`;
+                     VALUES(NVL((select max(ID_PONTAJ) +1 from PONTAJ),1), (select ID_SALARIAT from N_CARTELE where COD_CARTELA = '${pontare.COD_CARTELA}' and DATA_IES IS NULL AND DATA_INCEP IS NOT NULL), '${pontare.DATA_PONTARE}',null ,null , '${pontare.ORA_PONTARE}', null, sysdate, 5)`;
 
           try {
             const testPontaj = await database.simpleExecuteWithConn(
@@ -194,7 +194,7 @@ async function sendAndProcessFile(array) {
       } else if (pontare.TIP_PONTARE == "OT") {
         query2 = `INSERT INTO PONTAJ_CEAS
                             VALUES(NVL((select max(ID_PONTAJ_CEAS)+1 from PONTAJ_CEAS),1),
-                            '${pontare.ID_CEAS}', '${pontare.COD_CARTELA}', '${pontare.DATA_PONTARE}', '${pontare.ORA_PONTARE}', '${pontare.TIP_PONTARE}') `;
+                            '${pontare.ID_CEAS}', '${pontare.COD_CARTELA}', '${pontare.DATA_PONTARE}', '${pontare.ORA_PONTARE}', '${pontare.TIP_PONTARE}', sysdate, 5) `;
         // query2 = `INSERT INTO PONTAJ_CEAS(NR_CEAS, COD_CARTELA, DATA_PONTAT, ORA_PONTAT, ACTIUNE, DATA_ORA_OPER, ID_N_CALCO)
         // VALUES(
         // '${pontare.ID_CEAS}', '${pontare.COD_CARTELA}', '${pontare.DATA_PONTARE}', '${pontare.ORA_PONTARE}', '${pontare.TIP_PONTARE}', sysdate, 5) `;
@@ -259,7 +259,7 @@ async function sendAndProcessFile(array) {
           }
         } else if (test.rows.length == 0) {
           let queryAddPontaj = `INSERT INTO PONTAJ
-                     VALUES(NVL((select max(ID_PONTAJ) +1 from PONTAJ),1), (select ID_SALARIAT from N_CARTELE where COD_CARTELA = '${pontare.COD_CARTELA}' and DATA_IES IS NULL AND DATA_INCEP IS NOT NULL), '${pontare.DATA_PONTARE}',null ,null , null, '${pontare.ORA_PONTARE}')`;
+                     VALUES(NVL((select max(ID_PONTAJ) +1 from PONTAJ),1), (select ID_SALARIAT from N_CARTELE where COD_CARTELA = '${pontare.COD_CARTELA}' and DATA_IES IS NULL AND DATA_INCEP IS NOT NULL), '${pontare.DATA_PONTARE}',null ,null , null, '${pontare.ORA_PONTARE}', sysdate, 5)`;
           //  let queryAddPontaj = `INSERT INTO PONTAJ(ID_SALARIAT, DATA_PONTAJ, PONTAT_REAL, PONTAT_CONFIRMAT, ORA_I, ORA_E, DATA_ORA_OPER, ID_N_CALCO)
           //  VALUES( (select ID_SALARIAT from N_CARTELE where COD_CARTELA = '${pontare.COD_CARTELA}'), '${pontare.DATA_PONTARE}',null ,null , null, '${pontare.ORA_PONTARE}', sysdate, 5)`;
 

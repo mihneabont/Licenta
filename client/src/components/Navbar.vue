@@ -32,16 +32,6 @@
         </template>
         <span>Schimbare parolă</span>
       </v-tooltip>
-            <v-tooltip bottom v-if="isHome">
-        <template v-slot:activator="{ on }">
-          <div v-on="on">
-            <v-btn class="d-flex error mr-2" @click="logout()"
-              ><i class="fa fa-sign-out fa-2x" aria-hidden="true"
-            /></v-btn>
-          </div>
-        </template>
-        <span>Deconectare</span>
-      </v-tooltip>
       <v-tooltip bottom v-if="isCalendar && isSuperAdmin">
         <template v-slot:activator="{ on }">
           <div v-on="on">
@@ -272,10 +262,6 @@ export default {
     },
     toggleDialogSarbatori() {
       this.dialogSarbatori = false;
-    },
-    logout() {
-      this.$router.push("/autentificare");
-      this.$store.commit("LOGOUT");
     },
     getGhid() {
       axios
