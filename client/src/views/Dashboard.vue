@@ -11,15 +11,6 @@
       Se generează foaia de prezență
     </v-snackbar>
     <v-snackbar
-      color="amber darken-3"
-      :timeout="10000000"
-      bottom
-      v-model="snackbarGhid"
-      class="mt-5"
-    >
-      Atentie! Înainte de a întocmi foaia de prezență, vă rugăm să confirmați datele folosind "Confirmă date", altfel nu se pot calcula orele. După confirmare, datele nu vor mai putea fi modificate!
-    </v-snackbar>
-    <v-snackbar
       v-model="doneAlert"
       :timeout="2000"
       color="success"
