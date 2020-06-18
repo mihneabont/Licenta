@@ -6,13 +6,14 @@
     #define SS_PIN          53      
  
     byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
+    String tokenAparat = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGFyYXQiOiJhcGFyYXQiLCJpYXQiOjE1OTI0NzI4NzJ9.ErUOam1WGTNNSjje7MghPX-c9YucgBbiA78xOzHSsps";
     IPAddress server(74,125,232,128);
     IPAddress ip(192, 168, 0, 177);
     IPAddress myDns(192, 168, 1, 1);
     byte gateway[] = { 192,168,1,1 };
     MFRC522 mfrc522(SS_PIN, RST_PIN);
     EthernetClient client;
-    String temp= "data=5";
+    String temp= "";
     bool sent = false; 
     bool executed = false;
 
@@ -43,56 +44,51 @@
     Serial.print("  DHCP assigned IP ");
     Serial.println(Ethernet.localIP());
   }
-  Serial.println(F("Scan PICC to see UID, SAK, type, and data blocks..."));
+  Serial.println(F("Puteti incepe scanarea..."));
     delay(1000);
     delay(1000);
     }
 
     void loop()                                           
     {
-        if ( ! mfrc522.PICC_ReadCardSerial()) {
-    return;
-  }
-   if ( !mfrc522.PICC_IsNewCardPresent()) {
-    return;
-    }
 
    if ( mfrc522.PICC_IsNewCardPresent()) {    
   if ( mfrc522.PICC_ReadCardSerial()) {
-    Serial.println("Great!.. each time a card is read and re-read this text will print *ONCE ONLY*");
-    executed = true;
-  }     
-} 
-else {  
-  if (executed) {
-    Serial.println("Oh dear... this seems to keep printing... ");  
-    executed = false;
-  }
+    String userid;
+for (byte i = 0; i < mfrc522.uid.size; i++) {
+  userid += String(mfrc522.uid.uidByte[i], HEX);
 }
-     if(!sent){
-     if (client.connect("192.168.1.141",3000)) {
-     sent = true;
+userid.toUpperCase();
+temp+= "codCartela=";
+temp += userid;
+Serial.println(userid);
+         if (client.connect("192.168.1.141",3000)) {
      Serial.println("Sending to Server: ");                 
-    client.println("POST /api/deviceData HTTP/1.1");           
-    Serial.println("POST /api/deviceData HTTP/1.1");           
+    client.println("POST /api/aparate/ HTTP/1.1");           
+    Serial.println("POST /api/aparate/ HTTP/1.1");           
     client.println("Host: 192.168.1.141");
     client.println("Content-Type: application/x-www-form-urlencoded");
+    client.println("Authorization: " + tokenAparat);
     client.println("Connection: close");
     client.println("User-Agent: Arduino/1.0");
     client.print("Content-Length: ");
     client.println(temp.length());
+    Serial.println(temp.length());
     client.println();
     client.print(temp);
+    Serial.print(temp);
     client.println();
     mfrc522.PICC_HaltA();   
      } 
-  } else {
-    sent = false;
-    }
+  }
 
-  // Select one of the cards
-  if ( ! mfrc522.PICC_ReadCardSerial()) {
-    return;
-  }                                    
+    executed = true;
+  }      
+else {  
+  if (executed) {
+    temp = "";
+    executed = false;
+  }
+}                                  
 
     }

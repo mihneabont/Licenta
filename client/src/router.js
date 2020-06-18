@@ -22,6 +22,11 @@ const router = new Router({
       component: () => import('./views/Login')
     },
     {
+      path: '/aparate',
+      name: 'aparate',
+      component: () => import('./views/Aparate')
+    },
+    {
       path: '/angajati',
       name: 'angajati',
       component: () => import('./views/Angajati')

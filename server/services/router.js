@@ -3,6 +3,7 @@ const router = new express.Router();
 const autentificare = require("../controllers/autentificare.js");
 const angajati = require("../controllers/angajati.js");
 const sarbatori = require("../controllers/sarbatori.js");
+const aparate = require("../controllers/aparate.js");
 const judete = require("../controllers/judete.js");
 const departamente = require("../controllers/departamente.js");
 const locatii = require("../controllers/locatii.js");
@@ -19,6 +20,9 @@ router.route("/angajati/:id?").delete(angajati.delete);
 
 router.route("/sarbatori/").get(sarbatori.get);
 router.route("/sarbatori/").post(sarbatori.post);
+
+router.route("/aparate/").post(aparate.post);
+router.route("/aparate/token").get(aparate.getToken);
 
 router.route("/judete/:id?").get(judete.get);
 router.route("/departamente/:id_loc?/:id_dep?").get(departamente.get);

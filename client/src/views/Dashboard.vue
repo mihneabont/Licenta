@@ -27,7 +27,7 @@
     <v-item-group align-center style="width:100%">
       <v-row class="d-flex flex-row justify-center">
         <v-col v-for="optiune in optiuniC" :key="optiune.titlu" md="2">
-          <v-item v-slot:default="{ active, toggle }">
+          <v-item v-slot:default="{}">
             <v-card
               :color="itemColor(optiune)"
               dark

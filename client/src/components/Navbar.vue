@@ -15,6 +15,16 @@
       <v-tooltip bottom v-if="isHome">
         <template v-slot:activator="{ on }">
           <div v-on="on">
+            <v-btn class="d-flex primary mr-2" @click="redirect"
+              ><i class="fa fa-microchip fa-2x" aria-hidden="true"
+            /></v-btn>
+          </div>
+        </template>
+        <span>Aparate pontaj</span>
+      </v-tooltip>
+      <v-tooltip bottom v-if="isHome">
+        <template v-slot:activator="{ on }">
+          <div v-on="on">
             <v-btn class="d-flex primary mr-2" @click="getGhid"
               ><i class="fa fa-book fa-2x" aria-hidden="true"
             /></v-btn>
@@ -215,6 +225,7 @@ export default {
       password: "",
       password2: "",
       passwordConf: "",
+      dialogAparate: false,
       showAlertWrongPassword: false,
       dialogSarbatori: false,
       dateSarbatori: [],
@@ -259,6 +270,9 @@ export default {
       this.showAlertWrongPassword = false;
       this.$refs.form.reset();
       this.dialogParola = false;
+    },
+    redirect(){
+      this.$router.push('/aparate');
     },
     toggleDialogSarbatori() {
       this.dialogSarbatori = false;
