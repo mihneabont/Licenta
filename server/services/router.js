@@ -22,6 +22,7 @@ router.route("/sarbatori/").get(sarbatori.get);
 router.route("/sarbatori/").post(sarbatori.post);
 
 router.route("/aparate/").post(aparate.post);
+router.route("/aparate/register").post(aparate.registerAparat);
 router.route("/aparate/token").get(aparate.getToken);
 
 router.route("/judete/:id?").get(judete.get);

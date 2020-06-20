@@ -45,7 +45,6 @@ async function get(req, res, next) {
   }
 
   async function post(req, res, next) {
-    console.log(req);
     try {
         var token;
         var payload;
@@ -64,14 +63,45 @@ async function get(req, res, next) {
                 }
                 return;
               }
-              console.log("autorizat");
-        console.log(req.body.codCartela)
         var data = JSON.parse(req.body.JSON);
         var codCartela = data.codCartela;
-        console.log(await aparate.getAngajatCuCod(codCartela))
+        const result = await aparate.getAngajatCuCod(codCartela);
+        if(result[0] && result[0].ID_SALARIAT) {
+          var idSalariat = result[0].ID_SALARIAT;
+        }
   }  catch (err) {
     next(err);
   }
+}
+
+async function registerAparat(req, res, next) {
+  try {
+      var token;
+      var payload;
+      if (!req.headers.authorization) {
+          return res.status(401).send({message: 'You are not authorized'});
+      }
+   
+      token = req.headers.authorization;
+      try {
+        payload = jwt.verify(token, config.jwtSecretKey_aparat);
+      } catch (e) {
+              if (e.name === 'TokenExpiredError') {
+                res.status(401).send({message: 'Token Expired'});
+              } else {
+                  res.status(401).send({message: 'Authentication failed'});
+              }
+              return;
+            }
+      var data = JSON.parse(req.body.JSON);
+      var adresaMAC = data.adresaMAC;
+      const result = await aparate.registerAparat(adresaMAC);
+      if(result) {
+        res.sendStatus(200);
+      }
+}  catch (err) {
+  next(err);
+}
 }
 
   async function getToken(req, res, next) {
@@ -108,4 +138,5 @@ async function get(req, res, next) {
 
 module.exports.get = get;
 module.exports.getToken = getToken;
+module.exports.registerAparat = registerAparat;
 module.exports.post = post;

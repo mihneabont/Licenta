@@ -15,7 +15,7 @@
     MFRC522 mfrc522(SS_PIN, RST_PIN);
     EthernetClient client;
     String temp= "";
-    String tempRegister = "{ \"adresaMAC\":\"" + adresaMAC + "\"}";
+    String tempRegister = "JSON={ \"adresaMAC\":\"" + adresaMAC + "\"}";
     bool sent = false; 
     bool executed = false;
 
@@ -48,7 +48,7 @@
   }
    if (client.connect("192.168.1.141",3000)) {
      Serial.println("Trimitere mesaj inregistrare ");                 
-    client.println("POST /api/aparate/ HTTP/1.1");                      
+    client.println("POST /api/aparate/register HTTP/1.1");                      
     client.println("Host: 192.168.1.141");
     client.println("Content-Type: application/x-www-form-urlencoded");
     client.println("Authorization: " + tokenAparat);
