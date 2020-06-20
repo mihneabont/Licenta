@@ -6,6 +6,7 @@
     #define SS_PIN          53      
  
     byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
+    String adresaMAC = "DE AD BE EF FE ED";
     String tokenAparat = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGFyYXQiOiJhcGFyYXQiLCJpYXQiOjE1OTI0NzI4NzJ9.ErUOam1WGTNNSjje7MghPX-c9YucgBbiA78xOzHSsps";
     IPAddress server(74,125,232,128);
     IPAddress ip(192, 168, 0, 177);
@@ -14,6 +15,7 @@
     MFRC522 mfrc522(SS_PIN, RST_PIN);
     EthernetClient client;
     String temp= "";
+    String tempRegister = "{ \"adresaMAC\":\"" + adresaMAC + "\"}";
     bool sent = false; 
     bool executed = false;
 
@@ -44,6 +46,20 @@
     Serial.print("  DHCP assigned IP ");
     Serial.println(Ethernet.localIP());
   }
+   if (client.connect("192.168.1.141",3000)) {
+     Serial.println("Trimitere mesaj inregistrare ");                 
+    client.println("POST /api/aparate/ HTTP/1.1");                      
+    client.println("Host: 192.168.1.141");
+    client.println("Content-Type: application/x-www-form-urlencoded");
+    client.println("Authorization: " + tokenAparat);
+    client.println("Connection: close");
+    client.println("User-Agent: Arduino/1.0");
+    client.print("Content-Length: ");
+    client.println(tempRegister.length());
+    client.println();
+    client.print(tempRegister);
+    client.println();
+   }
   Serial.println(F("Puteti incepe scanarea..."));
     delay(1000);
     delay(1000);
@@ -59,8 +75,8 @@ for (byte i = 0; i < mfrc522.uid.size; i++) {
   userid += String(mfrc522.uid.uidByte[i], HEX);
 }
 userid.toUpperCase();
-temp+= "codCartela=";
-temp += userid;
+temp+= "JSON=";
+temp += "{ \"codCartela\":\"" + userid + "\"}";
 Serial.println(userid);
          if (client.connect("192.168.1.141",3000)) {
      Serial.println("Sending to Server: ");                 

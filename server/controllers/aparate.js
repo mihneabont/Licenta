@@ -1,5 +1,6 @@
 const config = require("../config/token.js");
 var jwt = require('jsonwebtoken');
+const aparate = require('../db_apis/aparate.js');
  
 async function get(req, res, next) {
     try {
@@ -44,6 +45,7 @@ async function get(req, res, next) {
   }
 
   async function post(req, res, next) {
+    console.log(req);
     try {
         var token;
         var payload;
@@ -63,6 +65,10 @@ async function get(req, res, next) {
                 return;
               }
               console.log("autorizat");
+        console.log(req.body.codCartela)
+        var data = JSON.parse(req.body.JSON);
+        var codCartela = data.codCartela;
+        console.log(await aparate.getAngajatCuCod(codCartela))
   }  catch (err) {
     next(err);
   }
