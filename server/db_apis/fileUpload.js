@@ -87,32 +87,6 @@ async function sendAndProcessFile(array) {
 
       let query2 = ``;
       if (pontare.TIP_PONTARE == "IN") {
-        // query2 = `INSERT ALL INTO PONTAJ_CEAS
-        //         VALUES(NVL((select max(ID_PONTAJ_CEAS)+1 from PONTAJ_CEAS),1),
-        //         '${pontare.ID_CEAS}', '${pontare.COD_CARTELA}', '${pontare.DATA_PONTARE}', '${pontare.ORA_PONTARE}', '${pontare.TIP_PONTARE}', sysdate, 5)
-        //         INTO PONTAJ
-        //         VALUES(NVL((select max(ID_PONTAJ) + 1 from PONTAJ),1),
-        //         (select ID_SALARIAT from N_CARTELE where COD_CARTELA = '${pontare.COD_CARTELA}' and DATA_IES IS NULL AND DATA_INCEP IS NOT NULL),
-        //         '${pontare.DATA_PONTARE}',null ,null , '${pontare.ORA_PONTARE}',null , sysdate, 5)
-        //         SELECT 1 FROM DUAL`;
-
-        // console.log(pontare.COD_CARTELA);
-        // query2 = `INSERT ALL INTO PONTAJ_CEAS(NR_CEAS, COD_CARTELA, DATA_PONTAT, ORA_PONTAT, ACTIUNE, DATA_ORA_OPER, ID_N_CALCO)
-        //         VALUES(
-        //         '${pontare.ID_CEAS}', '${pontare.COD_CARTELA}', '${pontare.DATA_PONTARE}', '${pontare.ORA_PONTARE}', '${pontare.TIP_PONTARE}', sysdate, 5)
-        //         INTO PONTAJ(ID_SALARIAT, DATA_PONTAJ, PONTAT_REAL, PONTAT_CONFIRMAT, ORA_I, ORA_E, DATA_ORA_OPER, ID_N_CALCO)
-        //         VALUES(
-        //         (select ID_SALARIAT from N_CARTELE where COD_CARTELA = '${pontare.COD_CARTELA}'),
-        //         '${pontare.DATA_PONTARE}',null ,null , '${pontare.ORA_PONTARE}',null , sysdate, 5)
-        // //         SELECT 1 FROM DUAL`;
-        // try {
-        //     const dubluInsert = await database.simpleExecute(query2);
-        //     if(dubluInsert.rowsAffected == 2){
-        //         //console.log(`Valori adaugate in ambele tabele de la indexul: ${i}`);
-        //     }
-        // } catch (e) {
-        //     error += `EROARE la index ${i}: ` + e + `\n`;
-        // }
         query2 = `INSERT INTO PONTAJ_CEAS
                 VALUES(NVL((select max(ID_PONTAJ_CEAS)+1 from PONTAJ_CEAS),1),
                 '${pontare.ID_CEAS}', '${pontare.COD_CARTELA}', '${pontare.DATA_PONTARE}', '${pontare.ORA_PONTARE}', '${pontare.TIP_PONTARE}')`;
