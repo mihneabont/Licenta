@@ -22,7 +22,6 @@ function simpleExecute(statement, binds = [], opts = {}) {
       reject(err);
     } finally {
       if (conn) {
-        // conn assignment worked, need to close
         try {
           await conn.close();
         } catch (err) {

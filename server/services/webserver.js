@@ -20,7 +20,7 @@ function initialize() {
       .listen(webServerConfig.port)
       .on("listening", () => {
         console.log(
-          `Web server listening on localhost:${webServerConfig.port}`
+          `Serverul a fost pornit cu succes pe portul:${webServerConfig.port}`
         );
 
         resolve();

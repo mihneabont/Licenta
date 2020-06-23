@@ -6,9 +6,6 @@ const app = express();
 const oracledb = require("oracledb");
 const dbConfig = require('./config/database.js');
 const defaultThreadPoolSize = 4;
- 
-// Increase thread pool size by poolMax
-process.env.UV_THREADPOOL_SIZE = dbConfig.hrPool.poolMax + defaultThreadPoolSize;
 
 oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT;
 
