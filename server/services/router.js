@@ -29,6 +29,8 @@ router.route("/judete/:id?").get(judete.get);
 router.route("/departamente/:id_loc?/:id_dep?").get(departamente.get);
 router.route("/departamenteDinLoc/:id?").get(departamente.get2);
 router.route("/locatii/:id?").get(locatii.get);
+
+
 router.route("/autentificare").post(autentificare.post);
 router.route("/schimbaParola").post(autentificare.schimbaParola);
 
@@ -36,7 +38,6 @@ router.route("/angajatipublic/:id?").get(angajatipublic.get);
 
 router.route("/calendarAngajat/:id?/:date?").get(calendarAngajat.get);
 router.route("/calendarAngajatConfirmat/:id?/:date?").get(calendarAngajat.getConfirmat);
-
 router.route("/calendarAngajatSuper/:id?").put(calendarAngajat.put);
 router.route("/calendarAngajat/:id?").put(calendarAngajat.put2);
 
@@ -51,4 +52,5 @@ router.route("/confirmareLocatie/:id?/:date?").post(confirmareDep.post2);
 router.route("/confirmareLocatieDepart/:id_loc?/:id_dep?/:date?").post(confirmareDep.post3);
 
 router.route("/upload").post(fileUpload.post);
+
 module.exports = router;
