@@ -49,16 +49,17 @@ export default {
     return {
       headers: [
         {
-          text: "NR APARAT",
+          text: "NR APARAT", value:"cod"
         },
         { text: "UID APARAT", value: "COD_CARTELA" },
+        { text: "ULTIMA PORNIRE", value: "up" },
       ],
       footer_props: {
         "items-per-page-options": [],
         "items-per-page-text": "",
         "disable-items-per-page": true,
       },
-      tableItems: [],
+      tableItems: [{cod:1, COD_CARTELA: "DE AD BE EF FE ED", up:"20/06/2020"}],
       tokenAparat:''
     };
   },
