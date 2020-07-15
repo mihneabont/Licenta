@@ -12,7 +12,8 @@
         <span style="font-size:30px;">EMP MANAGER</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-tooltip bottom v-if="isHome">
+            <div class="d-flex">
+      <v-tooltip bottom v-if="isHome && isSuperAdmin">
         <template v-slot:activator="{ on }">
           <div v-on="on">
             <v-btn class="d-flex primary mr-2" @click="redirect"
@@ -42,6 +43,7 @@
         </template>
         <span>Schimbare parolă</span>
       </v-tooltip>
+            </div>
       <v-tooltip bottom v-if="isCalendar && isSuperAdmin">
         <template v-slot:activator="{ on }">
           <div v-on="on">

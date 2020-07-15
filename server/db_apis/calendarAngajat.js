@@ -51,10 +51,14 @@ async function createSelectCalendarConfirmat(angajat) {
 
 async function updateSuperAdmin(id, requestBody) {
   for(i in requestBody) {
+    let dateParts = requestBody[i].DATA_PONTAJ.split('/');
+    if (dateParts[1].length === 1) {
+      dateParts[1] = "0" + dateParts[1];
+    }
+    let data = dateParts.join('/');
     let query = `select * from PONTAJ
-                where ID_SALARIAT = ${id} and DATA_PONTAJ = TO_DATE('${requestBody[i].DATA_PONTAJ}', 'DD-MM-YYYY') `;
+                where ID_SALARIAT = ${id} and to_char(DATA_PONTAJ + 1/12, 'dd/mm/yyyy') = '${data}'`;
     const result = await database.simpleExecute(query, {});
-    
     if(result.rows.length === 0){
       //insert
       let queryInsert = `INSERT INTO PONTAJ VALUES(NVL((select max(ID_PONTAJ) + 1 from PONTAJ),1),
