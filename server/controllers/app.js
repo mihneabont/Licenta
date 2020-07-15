@@ -15,9 +15,9 @@ oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT;
 const webServer = require('./services/webserver.js');
  
 async function startup() {
-  console.log('Starting application');
+  ('Starting application');
   try {
-    console.log('Initializing database module');
+    ('Initializing database module');
  
     await database.initialize(); 
   } catch (err) {
@@ -27,7 +27,7 @@ async function startup() {
   }
  
   try {
-    console.log('Initializing web server module');
+    ('Initializing web server module');
  
     await webServer.initialize();
   } catch (err) {

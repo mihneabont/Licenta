@@ -219,55 +219,6 @@ export default {
               });
           });
       }
-      // if (this.departament.NUME_DEPART !== "REPREZENTANTA") {
-      //   let optiuni = {
-      //     id: this.departament.ID_N_DEPART,
-      //     date: this.date
-      //       .split("-")
-      //       .reverse()
-      //       .join("-"),
-      //     jumatate: this.perioada.value,
-      //     userCurent: this.getUser.data.id
-      //   };
-      //   this.toggleDialogCuGenerare();
-      //   return axios
-      //     .post(`//${ipServer}:3000/api/create-pdf`, optiuni)
-      //     .then(() => {
-      //       axios
-      //         .get(`//${ipServer}:3000/api/fetch-pdf`, { responseType: "blob" })
-      //         .then(res => {
-      //           const pdfBlob = new Blob([res.data], {
-      //             type: "application/pdf"
-      //           });
-      //           saveAs(pdfBlob, `FoaiePrezenta${optiuni.date}.pdf`);
-      //           this.$emit("showDoneAlert");
-      //         });
-      //     });
-      // } else {
-      //   let optiuni = {
-      //     id: this.locatie.ID_N_LOCATIE,
-      //     date: this.date
-      //       .split("-")
-      //       .reverse()
-      //       .join("-"),
-      //     jumatate: this.perioada.value,
-      //     userCurent: this.getUser.data.id
-      //   };
-      //   this.toggleDialogCuGenerare();
-      //   return axios
-      //     .post(`//${ipServer}:3000/api/create-pdf-locatie`, optiuni)
-      //     .then(() => {
-      //       axios
-      //         .get(`//${ipServer}:3000/api/fetch-pdf`, { responseType: "blob" })
-      //         .then(res => {
-      //           const pdfBlob = new Blob([res.data], {
-      //             type: "application/pdf"
-      //           });
-      //           saveAs(pdfBlob, `FoaiePrezenta${optiuni.date}.pdf`);
-      //           this.$emit("showDoneAlert");
-      //         });
-      //     });
-      // }
     }
   },
   mounted() {
@@ -284,7 +235,7 @@ export default {
     axios.get(`//${ipServer}:3000/api/departamente`).then(response => {
       this.listaDepartamente = response.data;
       this.departament = this.listaDepartamente[0];
-      console.log(
+      (
         this.date
           .split("-")
           .reverse()

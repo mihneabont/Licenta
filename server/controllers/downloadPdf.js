@@ -12,7 +12,7 @@ var primulAngajat = true;
 
 const compile = async function(templateName, data) {
   const filePath = path.join(process.cwd(), "templates", `${templateName}.hbs`);
-  console.log(filePath);
+  (filePath);
   const html = await fs.readFile(filePath, "utf-8");
   return hbs.compile(html)(data);
 };
@@ -118,9 +118,7 @@ async function post(req, res, next) {
       context.jumatate = req.body.jumatate;
     }
 
-    if (req.body.userCurent) {
-      context.userCurent = req.body.userCurent;
-    }
+      context.userCurent = payload.id_utilizator;
 
     try {
       let lunaArray = context.date.split("/");
@@ -154,8 +152,8 @@ async function post(req, res, next) {
       var numeCurent = rowsBD.numeCurent;
       var sefDepartament = rowsBD.numeSef;
       const rows = rowsBD.randuri;
-      // console.log("aaa");
-      //   console.log(rows[1]);
+      // ("aaa");
+      //   (rows[1]);
       var departament = "";
       if (rows && rows[0]) {
         departament = rows[0].NUME_LUNG.toUpperCase();
@@ -240,12 +238,12 @@ async function post(req, res, next) {
           angajat[property] = genereazaOre[property];
         }
 
-         console.log(angajat);
+         (angajat);
 
         var oRegie = "00:00";
         var oNorma = "00:00";
         for (let j = 0; j < angajat.orePontat.length; j++) {
-          // console.log(angajat.zile[i].prescurtare + " " + comparaOre(angajat.orePontat[j].oraR));
+          // (angajat.zile[i].prescurtare + " " + comparaOre(angajat.orePontat[j].oraR));
           if (
             angajat.zile[j].prescurtare === "V" &&
             comparaOreVineri(angajat.orePontat[j].oraC) == true
@@ -264,8 +262,8 @@ async function post(req, res, next) {
         }
 
         for (let j = 0; j < angajat.orePontat.length; j++) {
-          // console.log(angajat.zile[i].prescurtare + " " + comparaOre(angajat.orePontat[j].oraR));
-          console.log(angajat.orePontat[j]);
+          // (angajat.zile[i].prescurtare + " " + comparaOre(angajat.orePontat[j].oraR));
+          (angajat.orePontat[j]);
           if (
             angajat.zile[j].prescurtare === "V" && (angajat.orePontat[j].oraR || angajat.orePontat[j].oraC)
           ) {
@@ -290,8 +288,8 @@ async function post(req, res, next) {
         }
       }
 
-      // console.log(data.pagini[0].randuri[1]);
-      // console.log(data.pagini[1]);
+      // (data.pagini[0].randuri[1]);
+      // (data.pagini[1]);
 
       /*  data = {
           departament: "TEHNOLOGIA INFORMATIEI SI COMUNICATII GRIVITA",
@@ -393,11 +391,11 @@ async function post(req, res, next) {
         landscape: true,
         printBackground: true
       });
-      console.log("done");
+      
       await browser.close();
       res.send(Promise.resolve());
     } catch (e) {
-      console.log(e);
+      (e);
       res.send(Promise.reject());
     }
   } catch (err) {
@@ -447,9 +445,7 @@ async function post2(req, res, next) {
       context.jumatate = req.body.jumatate;
     }
 
-    if (req.body.userCurent) {
-      context.userCurent = req.body.userCurent;
-    }
+      context.userCurent = payload.id_utilizator;
 
     try {
       let lunaArray = context.date.split("/");
@@ -587,7 +583,7 @@ async function post2(req, res, next) {
         }
 
         for (let j = 0; j < angajat.orePontat.length; j++) {
-          // console.log(angajat.zile[i].prescurtare + " " + comparaOre(angajat.orePontat[j].oraR));
+          // (angajat.zile[i].prescurtare + " " + comparaOre(angajat.orePontat[j].oraR));
           if (
             angajat.zile[j].prescurtare === "V" && (angajat.orePontat[j].oraR || angajat.orePontat[j].oraC)
           ) {
@@ -630,11 +626,11 @@ async function post2(req, res, next) {
         landscape: true,
         printBackground: true
       });
-      console.log("done");
+      ("done");
       await browser.close();
       res.send(Promise.resolve());
     } catch (e) {
-      console.log(e);
+      (e);
       res.send(Promise.reject());
     }
   } catch (err) {
@@ -686,9 +682,7 @@ async function post3(req, res, next) {
       context.jumatate = req.body.jumatate;
     }
 
-    if (req.body.userCurent) {
-      context.userCurent = req.body.userCurent;
-    }
+      context.userCurent = payload.id_utilizator;
 
     try {
       let lunaArray = context.date.split("/");
@@ -824,8 +818,8 @@ async function post3(req, res, next) {
           oRegie = addTimes(oRegie, angajat.orePontat[j].oraC);
         }
         for (let j = 0; j < angajat.orePontat.length; j++) {
-          // console.log(angajat.zile[i].prescurtare + " " + comparaOre(angajat.orePontat[j].oraR));
-          console.log(angajat);
+          // (angajat.zile[i].prescurtare + " " + comparaOre(angajat.orePontat[j].oraR));
+          (angajat);
           if (
             angajat.zile[j].prescurtare === "V" && (angajat.orePontat[j].oraR || angajat.orePontat[j].oraC)
           ) {
@@ -868,11 +862,11 @@ async function post3(req, res, next) {
         landscape: true,
         printBackground: true
       });
-      console.log("done");
+      ("done");
       await browser.close();
       res.send(Promise.resolve());
     } catch (e) {
-      console.log(e);
+      (e);
       res.send(Promise.reject());
     }
   } catch (err) {
@@ -996,7 +990,7 @@ function getOre(ultima_zi, pontaje) {
   let oIFP = "";
   let zFP = 0;
 
-  // console.log(pontaje);
+  // (pontaje);
 
   //??
   let oSUPL = "";
@@ -1229,7 +1223,7 @@ function timeConvert(n) {
 function calculeazaOPCeas(oraP, timpP) {
   let ora = oraP.split(":");
   let timp = timpP.split(":");
-  console.log(ora);
+  (ora);
 
   let minute = 0;
 
@@ -1252,7 +1246,7 @@ function calculeazaOPCeas(oraP, timpP) {
     minute = timp[1] + minute;
   }
 
-  console.log(minute);
+  (minute);
 
   let data = timeConvert(minute);
 

@@ -70,7 +70,7 @@ async function createselecteazaAngajati(angajat) {
         result.rows[0]["NUME_DEPART_LUNG"] = null;
       }
 
-      console.log(result.rows[0]);
+      (result.rows[0]);
 
       return [result.rows[0]];
     }

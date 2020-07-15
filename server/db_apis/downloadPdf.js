@@ -54,8 +54,8 @@ async function genereazaPdf(dep) {
           from PONTAJ where DATA_PONTAJ >= to_date(:limita1,'DD/MM/YYYY') and DATA_PONTAJ <= to_date(:limita2,'DD/MM/YYYY')	and ID_SALARIAT = :id_sal`, binds2);                                
           if(getPontaje.rows !== null && getPontaje.rows !== []) {
             
-            // console.log("hellau " + angajat.ID_SALARIAT);
-            // console.log(getPontaje.rows);
+            // ("hellau " + angajat.ID_SALARIAT);
+            // (getPontaje.rows);
             for(let k=0;k<getPontaje.rows.length;k++) {
               let ziPontaj = {};
               if(getPontaje.rows[k] !== null) {
@@ -71,7 +71,7 @@ async function genereazaPdf(dep) {
             }
           }
         }catch(e){
-          console.log(e);
+          (e);
         }
         
 
@@ -139,8 +139,8 @@ if (dep.id_loc) {
         from PONTAJ where DATA_PONTAJ >= to_date(:limita1,'DD/MM/YYYY') and DATA_PONTAJ <= to_date(:limita2,'DD/MM/YYYY')	and ID_SALARIAT = :id_sal`, binds2);                                
         if(getPontaje.rows !== null && getPontaje.rows !== []) {
           
-          // console.log("hellau " + angajat.ID_SALARIAT);
-          // console.log(getPontaje.rows);
+          // ("hellau " + angajat.ID_SALARIAT);
+          // (getPontaje.rows);
           for(let k=0;k<getPontaje.rows.length;k++) {
             let ziPontaj = {};
             if(getPontaje.rows[k] !== null) {
@@ -156,7 +156,7 @@ if (dep.id_loc) {
           }
         }
       }catch(e){
-        console.log(e);
+        (e);
       }
       
 
@@ -200,7 +200,7 @@ if (dep.id_dep && dep.id_loc) {
   
   if(dep.date){
     const result = await database.simpleExecute(query, binds);
-    console.log(result);
+    (result);
     if(result.rows === [] || result.rows === null){
       return null;
     }
@@ -225,11 +225,11 @@ if (dep.id_dep && dep.id_loc) {
         
         const getPontaje =  await database.simpleExecute(`select ID_PONTAJ, to_char(DATA_PONTAJ + 1/12, 'dd/mm/yyyy') as DATA_PONTAJ, PONTAT_REAL, PONTAT_CONFIRMAT, ORA_I, ORA_E
         from PONTAJ where DATA_PONTAJ >= to_date(:limita1,'DD/MM/YYYY') and DATA_PONTAJ <= to_date(:limita2,'DD/MM/YYYY')	and ID_SALARIAT = :id_sal`, binds2);                                
-        console.log(getPontaje);
+        (getPontaje);
         if(getPontaje.rows !== null && getPontaje.rows !== []) {
           
-          // console.log("hellau " + angajat.ID_SALARIAT);
-          // console.log(getPontaje.rows);
+          // ("hellau " + angajat.ID_SALARIAT);
+          // (getPontaje.rows);
           for(let k=0;k<getPontaje.rows.length;k++) {
             let ziPontaj = {};
             if(getPontaje.rows[k] !== null) {
@@ -245,7 +245,7 @@ if (dep.id_dep && dep.id_loc) {
           }
         }
       }catch(e){
-        console.log(e);
+        (e);
       }
       
 

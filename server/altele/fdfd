@@ -130,15 +130,15 @@ async function sendAndProcessFile1(array) {
             let queryAddPontaj = `INSERT INTO PONTAJ VALUES(NVL((select max(ID_PONTAJ) + 1 as ID_PONTAJ from PONTAJ),1), (select ID_SALARIAT from N_CARTELE where COD_CARTELA = '${pontare.COD_CARTELA}'), '${pontare.DATA_PONTARE}',null ,null , '${pontare.ORA_PONTARE}',null , sysdate, 5)`;
             const testPontaj = await database.simpleExecute(queryAddPontaj);
             if(testPontaj.rowsAffected == 1){
-               console.log(`Added value at index: ${contor}`);
+               (`Added value at index: ${contor}`);
             } else {
                 error2 += `${contor}, `;
             }
            } else if(pontare.TIP_PONTARE == 'OT') {
-               console.log("daaa");
+               ("daaa");
             const test = await database.simpleExecute(`
             SELECT ID_PONTAJ, ORA_I FROM PONTAJ WHERE ID_SALARIAT = (select ID_SALARIAT from N_CARTELE where COD_CARTELA = '${pontare.COD_CARTELA}') and DATA_PONTAJ = '${pontare.DATA_PONTARE}'`);
-            console.log(test);
+            (test);
             if(test.rows.length == 1){
                 let queryUpdatePontaj;
                 let minuteReale = 0;
@@ -149,7 +149,7 @@ async function sendAndProcessFile1(array) {
                     minuteReale = parseInt(outArray[0]*60) + parseInt(outArray[1]) - parseInt(inArray[0]*60) - parseInt(inArray[1]);
                     oreReale = parseInt(minuteReale/60)+":"+parseInt(minuteReale%60);
                     if(oreReale.length > 4){
-                        console.log(oreReale);
+                        (oreReale);
                         oreReale = "8:00";
                     }
                     queryUpdatePontaj = `UPDATE PONTAJ SET
@@ -164,7 +164,7 @@ async function sendAndProcessFile1(array) {
                 
                 const testPontaj = await database.simpleExecute(queryUpdatePontaj);
                 if(testPontaj.rowsAffected == 1){
-                    console.log(`Updated value at index: ${contor}`);
+                    (`Updated value at index: ${contor}`);
                 } else {
                     error2 += `${contor}, `;
                 }
@@ -172,7 +172,7 @@ async function sendAndProcessFile1(array) {
                 let queryAddPontaj = `INSERT INTO PONTAJ VALUES(NVL((select max(ID_PONTAJ) +1 from PONTAJ),1), (select ID_SALARIAT from N_CARTELE where COD_CARTELA = '${pontare.COD_CARTELA}'), '${pontare.DATA_PONTARE}',null ,null , null, '${pontare.ORA_PONTARE}', sysdate, 5)`;
                 const testPontaj = await database.simpleExecute(queryAddPontaj);
                 if(testPontaj.rowsAffected == 1){
-                    console.log(`Added value at index: ${contor}`);
+                    (`Added value at index: ${contor}`);
                 } else {
                     error2 += `${contor}, `;
                 }
@@ -182,7 +182,7 @@ async function sendAndProcessFile1(array) {
        contor++;
     }
     query2 += `\n SELECT 1 FROM dual`;
-    console.log(error2);
+    (error2);
     if(contorSucces !== 0){
         //insert in bd
         const result = await database.simpleExecute(query2, {});

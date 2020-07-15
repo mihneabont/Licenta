@@ -67,8 +67,13 @@ async function get(req, res, next) {
         var codCartela = data.codCartela;
         const result = await aparate.getAngajatCuCod(codCartela);
         if(result[0] && result[0].ID_SALARIAT) {
-          var idSalariat = result[0].ID_SALARIAT;
+           var idSalariat = result[0].ID_SALARIAT;
+           const pontajAzi = await aparate.insertOraScanata(idSalariat);
+           if(pontajAzi.rowsAffected){
+             res.send("Success");
+           }
         }
+        
   }  catch (err) {
     next(err);
   }

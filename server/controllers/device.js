@@ -2,7 +2,7 @@
 
 async function post(req, res, next) {
     
-      console.log(req);
+      (req);
       res.status(200).json("123");
   }
   

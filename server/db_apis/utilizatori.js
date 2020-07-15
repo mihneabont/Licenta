@@ -7,10 +7,17 @@ const selecteazaUtilizator2 = `select ID_UTILIZATOR, NUME_UTILIZATOR, PAROLA, AD
 
 const selecteazaUtilizator3 = `select PAROLA from UTILIZATORI where ID_UTILIZATOR = :id_utilizator`;
 
+const selecteazaLocatie = `select ID_N_JUDET, ID_N_LOCATIE from DEPART_SALARIAT where ID_SALARIAT = :idSalariat`;
+
 const updateUtilizator = `update UTILIZATORI set PAROLA = :parola_noua where ID_UTILIZATOR = :id_utilizator`;
 
 
- 
+async function getLocatieUtilizator(idUtilizator){
+  let query = selecteazaLocatie;
+  const binds = {idSalariat: idUtilizator};
+  const result = await database.simpleExecute(query, binds);
+  return result.rows;
+}
 
 async function createSelecteazaUtilizator(utilizator) {
   if (utilizator.nume_utilizator) {
@@ -28,15 +35,15 @@ async function schimbaParola(utilizator) {
     let query = selecteazaUtilizator3;
     const binds = {};
     binds.id_utilizator = utilizator.idUtilizator;
-    console.log(binds);
+    (binds);
     const result = await database.simpleExecute(query, binds);
     binds.parola_actuala = utilizator.parolaActuala;
     if(result.rows[0].PAROLA) {
       const rez = bcrypt.compare(utilizator.parolaActuala, result.rows[0].PAROLA).then(function(res) {
-        console.log(result.rows[0].PAROLA)   
+        (result.rows[0].PAROLA)   
         if(res == true || utilizator.parolaActuala === result.rows[0].PAROLA) {
           bcrypt.hash(utilizator.parolaNoua, 10).then( async function(hash) {
-            console.log(hash);
+            (hash);
             let querryUpdate = updateUtilizator;
             let binds ={};
             binds.parola_noua = hash;
@@ -59,5 +66,6 @@ async function schimbaParola(utilizator) {
 
 module.exports ={
   createSelecteazaUtilizator: createSelecteazaUtilizator,
-  schimbaParola: schimbaParola
+  schimbaParola: schimbaParola,
+  getLocatieUtilizator: getLocatieUtilizator
 };

@@ -230,7 +230,7 @@ export default {
   mounted() {},
   created() {
     axios.get(`//${ipServer}:3000/api/departamente`).then(() => {
-      console.log("Conectat");
+      ("Conectat");
     });
   }
 };

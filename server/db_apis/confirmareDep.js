@@ -2,10 +2,6 @@ const database = require("../services/database.js");
 
 const zileSpeciale = ["NEM", "AM", "SIND", "CM", "CO", "COR", "SUSP", "DET", "IFP", "PRB", "REC"];
 
-//  const updateDepart = `update pontaj set PONTAT_CONFIRMAT = nvl(PONTAT_REAL, ORA_I)
-//         where ID_PONTAJ in(select ID_PONTAJ from pontaj
-//         where id_salariat in (select id_salariat from depart_salariat where ID_N_DEPART = :id_depart and TO_CHAR(DATA_PONTAJ, 'MM/YYYY') in :luna_an))`;
-
 const getPontaje = `select * from pontaj
         where id_salariat in (select id_salariat from depart_salariat where ID_N_DEPART = :id_depart and TO_CHAR(DATA_PONTAJ, 'MM/YYYY') in :luna_an)`;
 
@@ -23,7 +19,7 @@ async function confirmaPontaje(depart) {
         binds.id_depart = depart.id;
         if(depart.date){
             binds.luna_an = depart.date;
-            console.log(binds);
+            (binds);
             const result = await database.simpleExecute(query, binds);
             
             if(result.rows === null || result.rows === [] || result.rows.length === 0 || !result.rows) {
@@ -67,7 +63,7 @@ async function confirmaPontajeLocatie(depart) {
         binds.id_depart = depart.id;
         if(depart.date){
             binds.luna_an = depart.date;
-            console.log(binds);
+            (binds);
             const result = await database.simpleExecute(query, binds);
             
             if(result.rows === null || result.rows === [] || result.rows.length === 0 || !result.rows) {
@@ -107,14 +103,14 @@ async function confirmarePontajeDinDepSiLocatie(depart) {
     let query = getPontajeLocatieSiDep;
   
     const binds = {};
-    console.log(depart);
+    (depart);
     if (depart.id_depart && depart.id_locatie) {
         binds.id_depart = depart.id_depart;
         binds.id_locatie = depart.id_locatie;
         if(depart.date){
             binds.luna_an = depart.date;
             const result = await database.simpleExecute(query, binds);
-            console.log(result);
+            (result);
             
             if(result.rows === null || result.rows === [] || result.rows.length === 0 || !result.rows) {
                 return null;

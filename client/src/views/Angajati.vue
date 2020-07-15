@@ -395,7 +395,7 @@ export default {
     },
     listaAngajatiFilitrata() {
       var lowSearch = this.search.toLowerCase();
-      console.log(this.angajati);
+      (this.angajati);
       let keys = ["NUME", "PRENUME", "MARCA", "COMPLET"];
       return this.angajati.filter(function(angajat) {
         angajat.COMPLET = angajat.NUME + " " + angajat.PRENUME;
@@ -437,7 +437,7 @@ export default {
           "DEC"
         ];
         let current_datetime = data.toString().split("-");
-        console.log(current_datetime);
+        (current_datetime);
         return (
           current_datetime[2] +
           "-" +

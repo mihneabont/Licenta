@@ -12,7 +12,7 @@ dotenv.config();
 mongoose.connect(
   process.env.DB_CONNECT,
   { useCreateIndex: true, useNewUrlParser: true },
-  () => console.log("connected to db!")
+  () => ("connected to db!")
 );
 
 //USer Schema

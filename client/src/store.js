@@ -32,7 +32,7 @@ const store = new Vuex.Store({
         .post(`//${ipServer}:3000/api/user/register`, credentials)
         .then(response => {
           // eslint-disable-next-line no-console
-          console.log(response.data);
+          (response.data);
           commit("SET_USER_DATA", response.data);
         });
     },

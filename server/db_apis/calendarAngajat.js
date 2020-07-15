@@ -19,7 +19,7 @@ async function createSelectCalendar(angajat) {
     binds.id_angajat = angajat.id;
     if(angajat.date){
       binds.luna_an = angajat.date;
-      console.log(binds);
+      (binds);
       const result = await database.simpleExecute(query, binds);
       return result.rows;
     } else {
@@ -38,7 +38,7 @@ async function createSelectCalendarConfirmat(angajat) {
    binds.id_angajat = angajat.id;
    if(angajat.date){
      binds.luna_an = angajat.date;
-     console.log(binds);
+     (binds);
      const result = await database.simpleExecute(query, binds);
      return result.rows;
    } else {
@@ -61,7 +61,6 @@ async function updateSuperAdmin(id, requestBody) {
                           ${id}, TO_DATE('${requestBody[i].DATA_PONTAJ}', 'DD-MM-YYYY'), '${requestBody[i].PONTAT_REAL}',null,
                           '${requestBody[i].ORA_I}', '${requestBody[i].ORA_E}')`;
       const insert = await database.simpleExecute(queryInsert, {});
-      console.log(insert.rowsAffected);
     } else if(result.rows.length === 1){
       //update
       let queryUpdate = `UPDATE PONTAJ SET
@@ -70,7 +69,6 @@ async function updateSuperAdmin(id, requestBody) {
                           PONTAT_REAL = '${requestBody[i].PONTAT_REAL}'
                           WHERE ID_PONTAJ = ${result.rows[0].ID_PONTAJ}`;
       const updateRes = await database.simpleExecute(queryUpdate, {});
-      console.log(updateRes.rowsAffected);
     } else {
       //eroare
       return null;
@@ -86,25 +84,19 @@ async function updateAdmin(id, requestBody) {
     const result = await database.simpleExecute(query, {});
     
     if(result.rows.length === 0){
-      if(zileSpeciale.indexOf(requestBody[i].ORA_I) > -1){
         //insert
         let queryInsert = `INSERT INTO PONTAJ VALUES(NVL((select max(ID_PONTAJ) + 1 from PONTAJ),1),
-                            ${id}, TO_DATE('${requestBody[i].DATA_PONTAJ}', 'DD-MM-YYYY'), null,null,
-                            '${requestBody[i].ORA_I}', '${requestBody[i].ORA_E}')`;
+        ${id}, TO_DATE('${requestBody[i].DATA_PONTAJ}', 'DD-MM-YYYY'), '${requestBody[i].PONTAT_REAL}',null,
+        '${requestBody[i].ORA_I}', '${requestBody[i].ORA_E}')`;
         const insert = await database.simpleExecute(queryInsert, {});
-        console.log(insert.rowsAffected);
-      }
-    } else if(result.rows.length === 1){
-      if(zileSpeciale.indexOf(requestBody[i].ORA_I) > -1){
+    } else if(result.rows.length === 1 && !result.rows.PONTAT_CONFIRMAT){
         //update
         let queryUpdate = `UPDATE PONTAJ SET
-                        ORA_I = '${requestBody[i].ORA_I}',
-                        ORA_E = '${requestBody[i].ORA_I}',
-                        PONTAT_REAL = null
-                        WHERE ID_PONTAJ = ${result.rows[0].ID_PONTAJ}`;
+                          ORA_I = '${requestBody[i].ORA_I}',
+                          ORA_E = '${requestBody[i].ORA_E}',
+                          PONTAT_REAL = '${requestBody[i].PONTAT_REAL}'
+                          WHERE ID_PONTAJ = ${result.rows[0].ID_PONTAJ}`;
         const updateRes = await database.simpleExecute(queryUpdate, {});
-        console.log(updateRes.rowsAffected);
-      }
     } else {
       //eroare
       return null;

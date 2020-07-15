@@ -1219,7 +1219,7 @@ export default {
       for (let zi in this.listaZile) {
         let valoareZi = this.listaZile[zi];
         if (valoareZi && valoareZi.TIP === TIP_ZI.LUCRATA) {
-          console.log(valoareZi);
+          (valoareZi);
           if (
             !valoareZi.ORA_I ||
             !valoareZi.ORA_E ||
@@ -1481,7 +1481,7 @@ export default {
       if (!this.editVisible) {
         if (this.listaZile[day]) {
           this.ziSelectata = this.listaZile[day];
-          console.log(this.ziSelectata);
+          (this.ziSelectata);
         } else {
           let dataPontaj;
           if (day < 10) {
@@ -1516,7 +1516,7 @@ export default {
                 1
               );
             }
-            console.log(this.nrZileSelectate);
+            (this.nrZileSelectate);
           }
         }
         if (!this.selectareM) {
@@ -1610,7 +1610,7 @@ export default {
     this.getSarbatori();
     this.calendarDate = this.date + "-1";
     axios.get(`//${ipServer}:3000/api/judete`).then((response) => {
-      console.log(this.getUser.data);
+      (this.getUser.data);
       if (this.getUser.data.idAngajat !== 99999) {
         this.listaJudete = response.data.filter(
           (item) => item.ID_N_JUDET === this.getUser.data.judet

@@ -1,4 +1,5 @@
 const calendarAngajat = require('../db_apis/calendarAngajat.js');
+const utilizatori =  require('../db_apis/utilizatori.js');
 const config = require("../config/token.js");
 var jwt = require('jsonwebtoken');
 
@@ -144,9 +145,9 @@ async function put2(req, res,next) {
     }
   
     token = req.headers.authorization;
-  
+    let payload;
     try {
-        let payload = jwt.verify(token, config.jwtSecretKey_admin);
+        payload = jwt.verify(token, config.jwtSecretKey_admin);
     } catch (e) {
         if (e.name === 'TokenExpiredError') {
             res.status(401).send({message: 'Token Expired'});
@@ -161,8 +162,11 @@ async function put2(req, res,next) {
     const context = {};
  
     context.id = parseInt(req.params.id, 10);
-
+    const locUtilizator = await utilizatori.getLocatieUtilizator(payload.idSalariat);
+    const locAngajat = await utilizatori.getLocatieUtilizator(context.id);
+    if( Object.entries(locUtilizator).toString() === Object.entries(locAngajat).toString()){
     angajatBD = await calendarAngajat.updateAdmin(context.id, req.body);
+    }
   
     if (angajatBD !== null) {
       res.status(200).json(angajatBD);

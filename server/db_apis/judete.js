@@ -19,7 +19,7 @@ async function createselecteazaJudete(judet) {
     }
   
     const result = await database.simpleExecute(query, binds);
-    console.log(result)
+    (result)
 
     return result.rows;
 }

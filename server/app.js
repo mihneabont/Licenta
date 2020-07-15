@@ -15,7 +15,7 @@ oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT;
 const webServer = require('./services/webserver.js');
  
 async function startup() {
-  console.log('Aplicația pornește');
+  ('Aplicația pornește');
   try {
     console.log('Initializare baza de date');
  

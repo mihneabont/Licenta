@@ -224,7 +224,7 @@ export default {
   },
   mounted() {
     axios.get(`//${ipServer}:3000/api/judete`).then(response => {
-      console.log(this.getUser.data);
+      (this.getUser.data);
       if (this.getUser.data.idAngajat !== 99999) {
         this.listaJudete = response.data.filter(
           item => item.ID_N_JUDET === this.getUser.data.judet

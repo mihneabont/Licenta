@@ -18,7 +18,7 @@ async function post(req, res,next) {
   try {
     let utilizator = getAuthFromReq(req);
     utilizatorBD = await utilizatori.createSelecteazaUtilizator(utilizator);
-    console.log(utilizatorBD);
+    (utilizatorBD);
 
     if(utilizatorBD.length === 0){
         return res.status(401).json({ error: 'Invalid login'})
@@ -37,19 +37,19 @@ async function post(req, res,next) {
       res.status(200).json({
         data:{id: utilizatorBD[0].ID_UTILIZATOR, nume:utilizatorBD[0].NUME_UTILIZATOR, admin:utilizatorBD[0].ADMIN, judet:utilizatorBD[0].ID_N_JUDET, idAngajat: utilizatorBD[0].ID_SALARIAT },
         token: jwt.sign({exp: Math.floor(Date.now() / 1000) + (300 * 60),
-          id_utilizator:utilizatorBD[0].ID_UTILIZATOR}, config.jwtSecretKey)
+          id_utilizator:utilizatorBD[0].ID_UTILIZATOR, idSalariat: utilizatorBD[0].ID_SALARIAT}, config.jwtSecretKey)
       });
     } else if (utilizatorBD[0].ADMIN === 1) {
       res.status(200).json({
         data:{id: utilizatorBD[0].ID_UTILIZATOR, nume:utilizatorBD[0].NUME_UTILIZATOR, admin:utilizatorBD[0].ADMIN, judet:utilizatorBD[0].ID_N_JUDET, idAngajat: utilizatorBD[0].ID_SALARIAT  },
         token: jwt.sign({exp: Math.floor(Date.now() / 1000) + (300 * 60),
-          id_utilizator:utilizatorBD[0].ID_UTILIZATOR}, config.jwtSecretKey_admin)
+          id_utilizator:utilizatorBD[0].ID_UTILIZATOR, idSalariat: utilizatorBD[0].ID_SALARIAT}, config.jwtSecretKey_admin)
       });
     } else if(utilizatorBD[0].ADMIN === 2) {
       res.status(200).json({
         data:{id: utilizatorBD[0].ID_UTILIZATOR, nume:utilizatorBD[0].NUME_UTILIZATOR, admin:utilizatorBD[0].ADMIN, judet:utilizatorBD[0].ID_N_JUDET, idAngajat: utilizatorBD[0].ID_SALARIAT  },
         token: jwt.sign({exp: Math.floor(Date.now() / 1000) + (300 * 60),
-          id_utilizator:utilizatorBD[0].ID_UTILIZATOR}, config.jwtSecretKey_superAdmin)
+          id_utilizator:utilizatorBD[0].ID_UTILIZATOR, idSalariat: utilizatorBD[0].ID_SALARIAT}, config.jwtSecretKey_superAdmin)
       });
     }
     
@@ -87,12 +87,12 @@ async function schimbaParola(req, res ,next) {
     }
     const context = {};
 
-    context.idUtilizator = req.body.idUtilizator;
+    context.idUtilizator = payload.id_utilizator;
     context.parolaActuala = req.body.parolaActuala;
     context.parolaNoua = req.body.parolaNoua;
 
     utilizatorBD = await utilizatori.schimbaParola(context);
-    console.log(utilizatorBD);
+    (utilizatorBD);
 
     if(utilizatorBD === `Wrong password`) {
       return res.status(403).json({ error: `Wrong password`})

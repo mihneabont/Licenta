@@ -25,7 +25,7 @@ async function sendAndProcessFile(array) {
     try {
       conn = await oracledb.getConnection();
     } catch (err) {
-      console.log(err);
+      (err);
     }
 
     const test = await database.simpleExecuteWithConn(
@@ -63,7 +63,7 @@ async function sendAndProcessFile(array) {
 
     // let dif = array.length - indexGasit;
     // let stacks = parseInt(dif/10000)+1;
-    // console.log(dif + " " + array.length + " " + stacks);
+    // (dif + " " + array.length + " " + stacks);
     // for(let j=0;j<stacks;j++){
     //     let limit = indexGasit + 10000;
     //     if((parseInt(j)+1) == stacks){
@@ -94,7 +94,7 @@ async function sendAndProcessFile(array) {
         try {
           const insertCeas = await database.simpleExecuteWithConn(conn, query2);
           if (insertCeas.rowsAffected == 1) {
-            //console.log(`Valori adaugate in tabela PONTAJ_CEAS de la indexul: ${i}`);
+            //(`Valori adaugate in tabela PONTAJ_CEAS de la indexul: ${i}`);
           }
         } catch (e) {
           error += `EROARE la index ${i}: ` + e + `\n`;
@@ -106,7 +106,7 @@ async function sendAndProcessFile(array) {
                                 and DATA_PONTAJ = '${pontare.DATA_PONTARE}'`
         );
         if (test.rows.length === 1) {
-          console.log(test.rows);
+          (test.rows);
           let queryUpdatePontaj;
           let minuteReale = 0;
           let oreReale = "";
@@ -144,7 +144,7 @@ async function sendAndProcessFile(array) {
               queryUpdatePontaj
             );
             if (testPontaj.rowsAffected == 1) {
-              //console.log(`Update in tabela PONTAJ de la indexul: ${i}`);
+              //(`Update in tabela PONTAJ de la indexul: ${i}`);
             }
           } catch (e) {
             error += `EROARE la index ${i}: ` + e + `\n`;
@@ -159,7 +159,7 @@ async function sendAndProcessFile(array) {
               queryAddPontaj
             );
             if (testPontaj.rowsAffected == 1) {
-              //console.log(`Valori adaugate in tabela PONTAJ de la indexul: ${i}`);
+              //(`Valori adaugate in tabela PONTAJ de la indexul: ${i}`);
             }
           } catch (e) {
             error += `EROARE la index ${i}: ` + e + `\n`;
@@ -176,7 +176,7 @@ async function sendAndProcessFile(array) {
         try {
           const insertCeas = await database.simpleExecuteWithConn(conn, query2);
           if (insertCeas.rowsAffected == 1) {
-            //console.log(`Valori adaugate in tabela PONTAJ_CEAS de la indexul: ${i}`);
+            //(`Valori adaugate in tabela PONTAJ_CEAS de la indexul: ${i}`);
           }
         } catch (e) {
           error += `EROARE la index ${i}: ` + e + `\n`;
@@ -226,7 +226,7 @@ async function sendAndProcessFile(array) {
               queryUpdatePontaj
             );
             if (testPontaj.rowsAffected == 1) {
-              //console.log(`Update in tabela PONTAJ de la indexul: ${i}`);
+              //(`Update in tabela PONTAJ de la indexul: ${i}`);
             }
           } catch (e) {
             error += `EROARE la index ${i}: ` + e + `\n`;
@@ -243,7 +243,7 @@ async function sendAndProcessFile(array) {
               queryAddPontaj
             );
             if (testPontaj.rowsAffected == 1) {
-              //console.log(`Valori adaugate in tabela PONTAJ de la indexul: ${i}`);
+              //(`Valori adaugate in tabela PONTAJ de la indexul: ${i}`);
             }
           } catch (e) {
             error += `EROARE la index ${i}: ` + e + `\n`;
@@ -252,13 +252,13 @@ async function sendAndProcessFile(array) {
       }
       contor++;
       //await sleep(10);
-      //console.log("contor:"+contor);
+      //("contor:"+contor);
     }
 
     //         indexGasit = i;
     //     }
     // }
-    console.log("contor:" + contor);
+    ("contor:" + contor);
     if (contor == 0) {
       return "Fisierul este identic.";
     } else {
@@ -270,7 +270,7 @@ async function sendAndProcessFile(array) {
       try {
         await conn.close();
       } catch (err) {
-        console.log(err);
+        (err);
       }
     }
   }

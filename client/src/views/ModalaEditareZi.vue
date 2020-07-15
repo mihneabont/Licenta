@@ -15,7 +15,7 @@
           group
           class="d-flex justify-center ml-4"
         >
-          <v-btn v-if="isSuperAdmin" value="LUCRATA" style="width:30%;">
+          <v-btn value="LUCRATA" style="width:30%;">
             Lucrată
           </v-btn>
           <v-btn value="ABS_MOTIVATA" style="width:30%;">
@@ -220,7 +220,6 @@ export default {
                 ? parseInt(minuteReale % 60)
                 : "0" + parseInt(minuteReale % 60));
           }
-          console.log(oreReale);
           this.oreReale = oreReale;
         } else {
           this.oreReale = null;
@@ -228,7 +227,7 @@ export default {
       }
     },
     salveaza() {
-      console.log(this.ziCopie);
+      (this.ziCopie);
       if (this.tipZi === this.TIP_ZI.LUCRATA && this.$refs.form.validate()) {
         if (
           this.ziCopie.TIP === this.TIP_ZI.ABS_MOTIVATA &&

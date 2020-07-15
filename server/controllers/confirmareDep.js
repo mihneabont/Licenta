@@ -1,4 +1,5 @@
 const confirmareDep = require('../db_apis/confirmareDep.js');
+const utilizatori = require('../db_apis/utilizatori.js');
 const config = require("../config/token.js");
 var jwt = require('jsonwebtoken');
  
@@ -120,7 +121,7 @@ async function post3(req, res,next) {
       }
     }
     const context = {};
-    console.log(req.params);
+    (req.params);
     context.id_depart = parseInt(req.params.id_dep, 10);
     context.id_locatie = parseInt(req.params.id_loc, 10);
     if(req.params.date){
